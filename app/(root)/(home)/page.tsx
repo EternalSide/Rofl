@@ -1,3 +1,9 @@
+import { UserButton } from "@clerk/nextjs";
+
 export default function Home() {
-	return <main className='h1-bold'> NEXT JS 13!!</main>;
+	return (
+		<main className='h1-bold'>
+			<UserButton />
+		</main>
+	);
 }
