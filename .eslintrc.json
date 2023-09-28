@@ -1,3 +1,8 @@
 {
-	"extends": ["next/core-web-vitals", "standard", "plugin:tailwindcss/recommended", "prettier"]
+  "extends": ["next/core-web-vitals", "standard", "plugin:tailwindcss/recommended", "prettier", "camelcase"],
+  "rules": {
+    "camelcase": "off",
+    "@typescript-eslint/camelcase": ["warn"],
+    "@typescript-eslint/naming-convention": "off"
+  }
 }
