@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 interface Props {
-  _id: any;
+  _id: string;
   name: string;
-  totalQuestions: any;
-  showCount: boolean;
+  totalQuestions?: any;
+  showCount?: boolean;
 }
 
 const RenderTag = ({ _id, name, totalQuestions, showCount }: Props) => {
