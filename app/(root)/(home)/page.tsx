@@ -29,7 +29,7 @@ const questions = [
   },
   {
     _id: "2",
-    title: "How to center a div?",
+    title: "Как выровнять div?",
     author: {
       _id: "2",
       name: "Jack White",
@@ -90,11 +90,10 @@ export default function MainPage() {
           ))
         ) : (
           <NoResult
-            title="There’s no question to show"
-            description=" Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next
-          big thing others learn from. Get involved! 💡"
+            title="Упс! Вопросов нету.."
+            description="Станьте первым, кто положит конец молчанию! 🚀Опубликуйте вопрос и начните обсуждение. Кто знает, может именно ваш вопрос поможет людям решить свою проблему.. Оставайтесь с нами! 💡"
             link="/asq-question"
-            linkTitle="Ask a Question"
+            linkTitle="Новый Вопрос"
           />
         )}
       </div>
