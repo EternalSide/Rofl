@@ -48,7 +48,7 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
           imgUrl="/assets/icons/avatar.svg"
           alt="Author"
           value={author.name}
-          title={` - asked ${convertedDate}`}
+          title={` - опубликовано ${convertedDate}`}
           href={`/profile/${author._id}`}
           isAuthor
           textStyles="body-medium text-dark400_light700"
@@ -57,21 +57,21 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
           value={formatAndDivideNumber(upvotes)}
-          title=" Votes"
+          title="Нравится"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="message"
           value={formatAndDivideNumber(anwsers.length)}
-          title=" Anwsers"
+          title="Ответов"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
           alt="Eye"
           value={formatAndDivideNumber(views)}
-          title=" Views"
+          title="Просмотров"
           textStyles="small-medium text-dark400_light800"
         />
       </div>

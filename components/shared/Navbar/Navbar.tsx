@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Theme from "./Theme";
 import MobileNavbar from "./MobileNavbar";
 import GlobalSearch from "../Search/GlobalSearch";
@@ -17,17 +17,19 @@ const Navbar = () => {
       <GlobalSearch />
       <div className="flex-between gap-5">
         <Theme />
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: "h-10 w-10",
-            },
-            variables: {
-              colorPrimary: "#ff7000",
-            },
-          }}
-          afterSignOutUrl="/"
-        />
+        <SignedIn>
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "h-10 w-10",
+              },
+              variables: {
+                colorPrimary: "#ff7000",
+              },
+            }}
+            afterSignOutUrl="/"
+          />
+        </SignedIn>
         <MobileNavbar />
       </div>
     </nav>
