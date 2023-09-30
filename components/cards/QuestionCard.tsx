@@ -45,13 +45,13 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
       {/* Низ Карточки*/}
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          imgUrl="/assets/icons/avatar.svg"
+          imgUrl={author.picture}
           alt="Author"
           value={author.name}
           title={` - опубликовано ${convertedDate}`}
           href={`/profile/${author._id}`}
           isAuthor
-          textStyles="body-medium text-dark400_light700"
+          textStyles="body-medium text-dark400_light700 -mt-1"
         />
         <Metric
           imgUrl="/assets/icons/like.svg"
