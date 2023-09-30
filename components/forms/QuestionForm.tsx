@@ -14,8 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
+import { useRouter, usePathname } from "next/navigation";
 
-const QuestionForm = () => {
+const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
   const form = useForm<z.infer<typeof Questions_Schema>>({
     resolver: zodResolver(Questions_Schema),
     defaultValues: {
@@ -26,10 +27,20 @@ const QuestionForm = () => {
   });
 
   const editorRef = useRef(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const onSubmit = async (values: z.infer<typeof Questions_Schema>) => {
     try {
-      await createQuestion(values);
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname,
+      });
+
+      router.push("/");
     } catch (error) {}
   };
 
@@ -38,6 +49,8 @@ const QuestionForm = () => {
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: any) => {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();
+      // ! Выяснить, что за баг с добавлением больше чем 3 тегов,
+      // ! И пофиксить его.
 
       const tagInput = e.target as HTMLInputElement;
       const tagValue = tagInput.value.trim();
@@ -49,7 +62,7 @@ const QuestionForm = () => {
             message: "Тег не может быть больше 15 символов.",
           });
         }
-
+        // * Если Тега нету, то добавим его.
         if (!field.value.includes(tagValue as never)) {
           form.setValue("tags", [...field.value, tagValue]);
           tagInput.value = "";
