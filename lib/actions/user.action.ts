@@ -2,9 +2,10 @@
 
 import User from "@/database/models/user.model";
 import connectToDatabase from "../mongoose";
-import { CreateUserParams, DeleteUserParams, UpdateUserParams } from "./shared.types";
+import { CreateUserParams, DeleteUserParams, GetAllUsersParams, UpdateUserParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
+import Tag from "@/database/models/tag.model";
 
 export async function getUserById(params: any) {
   try {
@@ -75,3 +76,30 @@ export async function deleteUser(params: DeleteUserParams) {
     throw e;
   }
 }
+
+export async function getAllUsers(params: GetAllUsersParams) {
+  try {
+    connectToDatabase();
+
+    const { page = 1, pageSize = 20, filter, searchQuery } = params;
+
+    const users = await User.find({}).sort({ createdAt: -1 });
+
+    // * TODO: Выбрать 3 самых популярных Тега пользователя.
+
+    return { users };
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+//
+// export async function getAllUsers(params: GetAllUsersParams) {
+//   try {
+//     connectToDatabase();
+
+//   } catch (e) {
+//     console.log(e);
+//     throw e;
+//   }
+// }

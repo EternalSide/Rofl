@@ -7,7 +7,7 @@ const connectToDatabase = async () => {
 
   if (!process.env.MONGODB_URL) return console.log("Ошибка: Не установлен MONGODB_URL.");
 
-  if (isConnected) return console.log("Подключение уже установлено.");
+  if (isConnected) return;
 
   try {
     await mongoose.connect(`${process.env.MONGODB_URL}`, {
