@@ -16,13 +16,13 @@ const Metric = ({ imgUrl, alt, value, title, textStyles, href, isAuthor }: Metri
   const metricContent = (
     <>
       <Image
-        className={cn("object-contain", href ? "rounded-full" : "")}
+        className={cn("object-contain", href ? "rounded-full -mt-1 mr-1" : "")}
         width={16}
         height={16}
         alt={alt}
         src={imgUrl}
       />
-      <p className={cn("flex items-center gap-1", textStyles)}>
+      <p className={cn("flex items-end gap-1", textStyles)}>
         {value}
         <span className={cn("small-regular line-clamp-1", isAuthor && "max-sm:hidden")}>{title}</span>
       </p>

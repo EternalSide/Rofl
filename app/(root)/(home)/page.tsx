@@ -49,7 +49,7 @@ const questions = [
 
 export default async function MainPage() {
   const results = await getQuestions({});
-  console.log(results.questions);
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
