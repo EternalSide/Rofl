@@ -68,8 +68,8 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
     connectToDatabase();
     const { questionId } = params;
     const question = await Question.findById(questionId)
-      .populate({ path: "tags", model: Tag })
-      .populate({ path: "author", model: User })
+      .populate({ path: "tags", model: Tag, select: "_id name" })
+      .populate({ path: "author", model: User, select: "_id clerkId name picture username" })
       .sort({ createdAt: -1 });
 
     return question;

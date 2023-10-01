@@ -15,14 +15,10 @@ interface MetricProps {
 const Metric = ({ imgUrl, alt, value, title, textStyles, href, isAuthor }: MetricProps) => {
   const metricContent = (
     <>
-      <Image
-        className={cn("object-contain", href ? "rounded-full -mt-1 mr-1" : "")}
-        width={16}
-        height={16}
-        alt={alt}
-        src={imgUrl}
-      />
-      <p className={cn("flex items-end gap-1", textStyles)}>
+      <div className="relative h-4 w-4">
+        <Image className={cn("object-contain", href ? "rounded-full  mr-1" : "")} fill alt={alt} src={imgUrl} />
+      </div>
+      <p className={cn("flex items-end gap-1 pt-[4px]", textStyles)}>
         {value}
         <span className={cn("small-regular line-clamp-1", isAuthor && "max-sm:hidden")}>{title}</span>
       </p>
@@ -37,6 +33,6 @@ const Metric = ({ imgUrl, alt, value, title, textStyles, href, isAuthor }: Metri
     );
   }
 
-  return <div className="flex-center flex-wrap gap-1">{metricContent}</div>;
+  return <div className="flex items-end flex-wrap gap-1">{metricContent}</div>;
 };
 export default Metric;

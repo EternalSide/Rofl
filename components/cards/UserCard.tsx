@@ -3,6 +3,7 @@ import RenderTag from "@/components/shared/RenderTag";
 import Link from "next/link";
 import getTopUserTags from "@/lib/actions/tag.action";
 import { Badge } from "@/components/ui/badge";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 type userCard = {
   clerkId: string;
@@ -21,10 +22,7 @@ const UserCard = async ({ user }: UserCardProps) => {
   return (
     <Link href={`/profile/${user.username}`} className="shadow-light100_darknone w-full max-xs:min-w-full xs:w-[260px]">
       <div className="background-light900_dark200 light-border w-full flex flex-col items-center justify-center rounded-2xl border p-8">
-        {/* Без div фото сжимается */}
-        <div className="relative h-[100px] w-[100px]">
-          <Image src={user.picture!} alt="Фото пользователя" fill className="object-cover rounded-full" />
-        </div>
+        <UserAvatar imgUrl={user.picture} classNames="h-[100px] w-[100px]" />
 
         <div className="mt-4 text-center">
           <h3 className="text-dark200_light900 h3-bold line-clamp-1">{user.name}</h3>
