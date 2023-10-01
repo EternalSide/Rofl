@@ -1,27 +1,31 @@
 import Image from "next/image";
 import RenderTag from "@/components/shared/RenderTag";
-import { IUser } from "@/database/models/user.model";
 import Link from "next/link";
 import getTopUserTags from "@/lib/actions/tag.action";
 import { Badge } from "@/components/ui/badge";
 
+type userCard = {
+  clerkId: string;
+  _id: string;
+  picture: string;
+  name: string;
+  username: string;
+};
+
 interface UserCardProps {
-  user: Partial<IUser>;
-  tags?: any;
+  user: userCard;
 }
 
 const UserCard = async ({ user }: UserCardProps) => {
   const userTopTags = await getTopUserTags({ userId: user._id });
   return (
-    <Link href={`/profile/${user.clerkId}`} className="shadow-light100_darknone w-full max-xs:min-w-full xs:w-[260px]">
+    <Link href={`/profile/${user.username}`} className="shadow-light100_darknone w-full max-xs:min-w-full xs:w-[260px]">
       <div className="background-light900_dark200 light-border w-full flex flex-col items-center justify-center rounded-2xl border p-8">
-        <Image
-          src={user.picture!}
-          alt="Фото пользователя"
-          width={100}
-          height={100}
-          className="object-cover rounded-full"
-        />
+        {/* Без div фото сжимается */}
+        <div className="relative h-[100px] w-[100px]">
+          <Image src={user.picture!} alt="Фото пользователя" fill className="object-cover rounded-full" />
+        </div>
+
         <div className="mt-4 text-center">
           <h3 className="text-dark200_light900 h3-bold line-clamp-1">{user.name}</h3>
           <p className="body-regular text-dark500_light500 mt-2">@{user.username}</p>

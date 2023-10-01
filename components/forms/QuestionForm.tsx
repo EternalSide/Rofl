@@ -51,7 +51,6 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
       e.preventDefault();
       // ! Выяснить, что за баг с добавлением больше чем 3 тегов,
       // ! И пофиксить его.
-
       const tagInput = e.target as HTMLInputElement;
       const tagValue = tagInput.value.trim();
 
@@ -172,7 +171,7 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
               <FormControl className="mt-3.5">
                 <>
                   <Input
-                    placeholder="Добавьте Теги"
+                    placeholder="React"
                     className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
@@ -199,13 +198,13 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
                 </>
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Напишите подходящий заголовок для вашего вопроса.
+                Нажатие на Enter добавит подходящий тег. Не больше 3 тегов.
               </FormDescription>
               <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
-        <Button disabled={isSubmitting} className="primary-gradient !text-light-900 w-fit" type="submit">
+        <Button disabled={isSubmitting} className="-mt-5 primary-gradient !text-light-900 w-fit" type="submit">
           {isSubmitting ? (
             <>{formtype === "edit" ? "Сохранение.." : "Публикация.."}</>
           ) : (

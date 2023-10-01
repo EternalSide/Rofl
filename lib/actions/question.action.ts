@@ -3,7 +3,7 @@
 import Question from "@/database/models/question.model";
 import connectToDatabase from "../mongoose";
 import Tag from "@/database/models/tag.model";
-import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
+import { CreateQuestionParams, GetQuestionByIdParams, GetQuestionsParams } from "./shared.types";
 import User from "@/database/models/user.model";
 import { revalidatePath } from "next/cache";
 
@@ -57,6 +57,22 @@ export async function getQuestions(params: GetQuestionsParams) {
       .sort({ createdAt: -1 });
 
     return { questions };
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function getQuestionById(params: GetQuestionByIdParams) {
+  try {
+    connectToDatabase();
+    const { questionId } = params;
+    const question = await Question.findById(questionId)
+      .populate({ path: "tags", model: Tag })
+      .populate({ path: "author", model: User })
+      .sort({ createdAt: -1 });
+
+    return question;
   } catch (e) {
     console.log(e);
     throw e;

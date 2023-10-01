@@ -85,21 +85,9 @@ export async function getAllUsers(params: GetAllUsersParams) {
 
     const users = await User.find({}).sort({ createdAt: -1 });
 
-    // * TODO: Выбрать 3 самых популярных Тега пользователя.
-
     return { users };
   } catch (e) {
     console.log(e);
     throw e;
   }
 }
-//
-// export async function getAllUsers(params: GetAllUsersParams) {
-//   try {
-//     connectToDatabase();
-
-//   } catch (e) {
-//     console.log(e);
-//     throw e;
-//   }
-// }

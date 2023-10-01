@@ -2,7 +2,8 @@
 
 import User from "@/database/models/user.model";
 import connectToDatabase from "../mongoose";
-import { GetTopUserTags } from "./shared.types";
+import { GetAllTagsParams, GetTopUserTags } from "./shared.types";
+import Tag from "@/database/models/tag.model";
 
 export default async function getTopUserTags(params: GetTopUserTags) {
   try {
@@ -14,6 +15,7 @@ export default async function getTopUserTags(params: GetTopUserTags) {
 
     if (!user) throw new Error("Пользователь не найден.");
 
+    // * TODO: Выбрать 3 самых популярных Тега пользователя.
     return [
       {
         _id: "1",
@@ -28,6 +30,21 @@ export default async function getTopUserTags(params: GetTopUserTags) {
         name: "Next",
       },
     ];
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function getAllTags(params: GetAllTagsParams) {
+  try {
+    connectToDatabase();
+
+    const { page = 1, pageSize = 20, filter, searchQuery } = params;
+
+    const tags = await Tag.find({}).sort({ createdAt: -1 });
+
+    return { tags };
   } catch (e) {
     console.log(e);
     throw e;
