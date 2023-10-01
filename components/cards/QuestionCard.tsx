@@ -18,8 +18,8 @@ interface Props {
     picture: string;
   };
 
-  upvotes: number;
-  views: number;
+  upvotes: string[];
+  views: string[];
   anwsers: Array<object>;
   createdAt: Date;
 }
@@ -43,7 +43,8 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
         ))}
       </div>
       {/* Низ Карточки*/}
-      <div className="flex-between mt-6 w-full flex-wrap gap-3">
+      <div className="flex-between mt-6 w-full flex-wrap gap-3 ">
+        {/* TODO: Разделить на 2 блока, левый и правый + сделать max-lg:flex-col  */}
         <Metric
           imgUrl={author.picture}
           alt="Author"
@@ -56,7 +57,7 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
-          value={formatAndDivideNumber(upvotes)}
+          value={formatAndDivideNumber(upvotes.length)}
           title="Нравится"
           textStyles="small-medium text-dark400_light800"
         />
@@ -70,7 +71,7 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
         <Metric
           imgUrl="/assets/icons/eye.svg"
           alt="Eye"
-          value={formatAndDivideNumber(views)}
+          value={formatAndDivideNumber(views.length)}
           title="Просмотров"
           textStyles="small-medium text-dark400_light800"
         />
