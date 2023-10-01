@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 
 export async function createQuestion(params: CreateQuestionParams) {
   try {
-    await connectToDatabase();
+    connectToDatabase();
 
     const { title, content, tags, author, path } = params;
 

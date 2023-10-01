@@ -17,13 +17,11 @@ const answerSchema = new Schema<IAnswer>(
       required: true,
     },
 
-    question: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Question",
-        required: true,
-      },
-    ],
+    question: {
+      type: Schema.Types.ObjectId,
+      ref: "Question",
+      required: true,
+    },
 
     content: {
       type: String,

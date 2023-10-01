@@ -11,21 +11,29 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { useRef } from "react";
 import Image from "next/image";
+import { createAnswer } from "@/lib/actions/answer.action";
+import { usePathname } from "next/navigation";
 
-const AnswerForm = () => {
+const AnswerForm = ({ authorId, questionId }: any) => {
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
     defaultValues: {
       answer: "",
     },
   });
-
+  const pathname = usePathname();
   const editorRef = useRef(null);
 
   const { mode } = useTheme();
 
   const onSubmit = async (values: z.infer<typeof AnswerSchema>) => {
     try {
+      await createAnswer({
+        content: values.answer,
+        author: authorId,
+        path: pathname,
+        question: questionId,
+      });
     } catch (e) {
       console.log(e);
     }

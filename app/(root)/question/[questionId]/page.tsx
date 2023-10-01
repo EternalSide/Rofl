@@ -5,9 +5,11 @@ import RenderTag from "@/components/shared/RenderTag";
 import UserAvatar from "@/components/shared/UserAvatar";
 
 import { getQuestionById } from "@/lib/actions/question.action";
+import { getUserById } from "@/lib/actions/user.action";
 
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
-import Image from "next/image";
+import { auth } from "@clerk/nextjs";
+
 import Link from "next/link";
 
 interface QuestionPageProps {
@@ -17,6 +19,8 @@ interface QuestionPageProps {
 
 const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
   const question: any = await getQuestionById({ questionId: params.questionId });
+  const { userId } = auth();
+  const user = await getUserById({ userId: userId });
 
   return (
     <>
@@ -63,7 +67,7 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
         ))}
       </div>
 
-      <AnswerForm />
+      <AnswerForm authorId={user._id.toString()} questionId={params.questionId} />
     </>
   );
 };
