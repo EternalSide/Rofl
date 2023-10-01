@@ -1,5 +1,7 @@
+import AnswerForm from "@/components/forms/AnswerForm";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
+import RenderTag from "@/components/shared/RenderTag";
 import UserAvatar from "@/components/shared/UserAvatar";
 
 import { getQuestionById } from "@/lib/actions/question.action";
@@ -55,6 +57,13 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
       </div>
 
       <ParseHTML data={question.content} />
+      <div className="mt-8 flex flex-wrap gap-2">
+        {question.tags.map((tag: any) => (
+          <RenderTag key={tag._id} _id={JSON.stringify(tag._id)} showCount={false} name={tag.name} />
+        ))}
+      </div>
+
+      <AnswerForm />
     </>
   );
 };
