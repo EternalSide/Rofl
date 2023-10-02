@@ -30,13 +30,23 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
         <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link className="flex items-center justify-start gap-1" href={`/profile/${question.author.username}`}>
             <UserAvatar imgUrl={question.author.picture} classNames="h-[22px] w-[22px]" />
-
             <p className="text-dark300_light700 paragraph-semibold"> {question.author.name}</p>
           </Link>
+
           <div className="flex justify-end">
-            <Votes />
+            <Votes
+              type="question"
+              questionId={question._id.toString()}
+              userId={user._id.toString()}
+              upvotes={question.upvotes.length}
+              downvotes={question.downvotes.length}
+              hasUpVoted={question.upvotes.includes(user._id)}
+              hasDownVoted={question.downvotes.includes(user._id)}
+              hasSaved={user.savedPosts.includes(question._id)}
+            />
           </div>
         </div>
+
         <h2 className="h2-semibold text-dark200_light900 text-left w-full mt-3.5">{question.title}</h2>
       </div>
 

@@ -28,7 +28,7 @@ const AllAnswers = async ({ totalAnswers, questionId, authorId, page, filter }: 
         {result?.answers.map((answer) => (
           <article key={answer._id} className="light-border border-b py-10">
             <div className="flex items-center justify-between">
-              <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+              <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2 w-full">
                 <Link
                   className="flex flex-1 items-start gap-1 sm:items-center"
                   href={`/profile/${answer.author.username}`}
@@ -42,7 +42,8 @@ const AllAnswers = async ({ totalAnswers, questionId, authorId, page, filter }: 
                     </p>
                   </div>
                 </Link>
-                <div className="flex justify-end">
+
+                <div className="flex justify-end text-white">
                   <Votes />
                 </div>
               </div>
