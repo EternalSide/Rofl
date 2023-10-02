@@ -1,11 +1,9 @@
-import TagCard from "@/components/cards/TagCard";
-import UserCard from "@/components/cards/UserCard";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
 import { TagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
-import { Tag } from "lucide-react";
+
 import Link from "next/link";
 
 const TagsPage = async () => {

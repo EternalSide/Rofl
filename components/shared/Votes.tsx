@@ -1,10 +1,12 @@
 "use client";
 import { createDownVoteAnswer, createUpVoteAnswer } from "@/lib/actions/answer.action";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 import { createDownVote, createUpVote } from "@/lib/actions/question.action";
 import { ToggleSaveQuestion } from "@/lib/actions/user.action";
 
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface VotesProps {
   type: string;
@@ -35,6 +37,10 @@ const Votes = ({
   const path = usePathname();
 
   const router = useRouter();
+
+  useEffect(() => {
+    viewQuestion({ questionId: questionId!, userId: userId ? userId : undefined });
+  }, [questionId, answerId, path, userId]);
 
   const handleVote = async (action: "UpVote" | "DownVote") => {
     // TODO: Auth modal + Modal Provider + zustand

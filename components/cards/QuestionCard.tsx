@@ -19,7 +19,7 @@ interface Props {
   };
 
   upvotes: string[];
-  views: string[];
+  views: number;
   anwsers: Array<object>;
   createdAt: Date;
 }
@@ -27,7 +27,7 @@ interface Props {
 const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, tags }: Props) => {
   const convertedDate = getTimestamp(createdAt);
   return (
-    <div className="card-wrapper w-full rounded-[10px] p-9 sm:px-11">
+    <div className="card-wrapper w-full rounded-[10px] p-9  sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
           <span className="line-clamp-1 flex sm:hidden text-dark400_light700 subtle-regular">{convertedDate}</span>
@@ -43,7 +43,7 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
         ))}
       </div>
       {/* Низ Карточки*/}
-      <div className="flex-between mt-6 w-full flex-wrap gap-3 ">
+      <div className="flex-between mt-8 w-full flex-wrap gap-3 ">
         {/* TODO: Разделить на 2 блока, левый и правый + сделать max-lg:flex-col  */}
         <Metric
           imgUrl={author.picture}
@@ -52,27 +52,27 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
           title={` - опубликовано ${convertedDate}`}
           href={`/profile/${author._id}`}
           isAuthor
-          textStyles="body-medium text-dark400_light700 -mt-1"
+          textStyles="body-medium text-dark400_light700 -mt-1 flex-row-reverse"
         />
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
           value={formatAndDivideNumber(upvotes.length)}
-          title="Нравится"
+          title="Нравится:"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="message"
           value={formatAndDivideNumber(anwsers.length)}
-          title="Ответов"
+          title="Ответов:"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
           alt="Eye"
-          value={formatAndDivideNumber(views.length)}
-          title="Просмотров"
+          value={formatAndDivideNumber(views)}
+          title="Просмотров:"
           textStyles="small-medium text-dark400_light800"
         />
       </div>

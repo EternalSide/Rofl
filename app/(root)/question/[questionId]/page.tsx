@@ -54,22 +54,22 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
         <Metric
           imgUrl="/assets/icons/clock.svg"
           alt="clock icon"
-          value={`asked ${getTimestamp(question.createdAt)}`}
-          title="Asked"
+          value={`опубликовано ${getTimestamp(question.createdAt)}`}
+          title=""
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="message"
           value={formatAndDivideNumber(question.anwsers.length)}
-          title="Ответов"
+          title="Ответов:"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
           alt="Eye"
           value={formatAndDivideNumber(question.views)}
-          title="Просмотров"
+          title="Просмотров:"
           textStyles="small-medium text-dark400_light800"
         />
       </div>

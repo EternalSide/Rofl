@@ -7,5 +7,5 @@ export const Questions_Schema = z.object({
 });
 
 export const AnswerSchema = z.object({
-  answer: z.string().min(5),
+  answer: z.string().min(5, { message: "Минимальное количество символов - 5" }),
 });

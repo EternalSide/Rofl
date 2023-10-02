@@ -28,13 +28,11 @@ const questionSchema = new Schema<IQuestion>(
         ref: "Tag",
       },
     ],
-    views: [
-      {
-        type: Number,
-        default: 0,
-        required: true,
-      },
-    ],
+    views: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
     upvotes: [
       {
         type: Schema.Types.ObjectId,
