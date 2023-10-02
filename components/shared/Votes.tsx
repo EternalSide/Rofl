@@ -1,6 +1,6 @@
 "use client";
 import { createDownVoteAnswer, createUpVoteAnswer } from "@/lib/actions/answer.action";
-import { createDownVote, createUpVote, saveQuestion } from "@/lib/actions/question.action";
+import { createDownVote, createUpVote } from "@/lib/actions/question.action";
 import { ToggleSaveQuestion } from "@/lib/actions/user.action";
 
 import Image from "next/image";

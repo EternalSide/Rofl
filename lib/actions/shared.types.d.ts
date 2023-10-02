@@ -141,7 +141,7 @@ export interface ToggleSaveQuestionParams {
   path: string;
 }
 
-export interface GetSavedQuestionsParams {
+export interface GetSavedPostsParams {
   clerkId: string;
   page?: number;
   pageSize?: number;

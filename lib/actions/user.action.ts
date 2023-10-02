@@ -6,12 +6,15 @@ import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetSavedPostsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
+import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
+import path from "path";
 
 export async function getUserById(params: any) {
   try {
@@ -118,6 +121,39 @@ export async function ToggleSaveQuestion(params: ToggleSaveQuestionParams) {
     }
 
     revalidatePath(path);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function getSavedPosts(params: GetSavedPostsParams) {
+  try {
+    connectToDatabase();
+
+    const { clerkId, page = 1, pageSize = 20, filter, searchQuery } = params;
+
+    const query: FilterQuery<typeof Question> = searchQuery ? { title: { $regex: new RegExp(searchQuery, "i") } } : {};
+
+    const user = await User.findOne({ clerkId }).populate({
+      path: "savedPosts",
+      match: query,
+      options: {
+        sort: {
+          createdAt: -1,
+        },
+        populate: [
+          { path: "tags", model: Tag, select: "_id name" },
+          { path: "author", model: User, select: "_id name picture clerkId username" },
+        ],
+      },
+    });
+
+    if (!user) {
+      throw new Error("Пользователь не найден");
+    }
+    const savedQuestions = user.savedPosts;
+    return { questions: savedQuestions };
   } catch (e) {
     console.log(e);
     throw e;

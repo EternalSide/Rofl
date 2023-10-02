@@ -34,6 +34,7 @@ const AnswerForm = ({ authorId, questionId }: any) => {
         path: pathname,
         question: questionId,
       });
+      form.resetField("answer");
     } catch (e) {
       console.log(e);
     }
