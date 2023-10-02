@@ -1,11 +1,15 @@
 "use client";
-import { createDownVote, createUpVote } from "@/lib/actions/question.action";
+import { createDownVoteAnswer, createUpVoteAnswer } from "@/lib/actions/answer.action";
+import { createDownVote, createUpVote, saveQuestion } from "@/lib/actions/question.action";
+import { ToggleSaveQuestion } from "@/lib/actions/user.action";
+
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface VotesProps {
   type: string;
-  questionId: string;
+  questionId?: string;
+  answerId?: string;
   userId: string;
   upvotes: number;
   downvotes: number;
@@ -14,16 +18,46 @@ interface VotesProps {
   hasSaved?: boolean;
 }
 
-const Votes = ({ type, questionId, userId, upvotes, downvotes, hasUpVoted, hasDownVoted, hasSaved }: VotesProps) => {
-  const handeSave = async () => {};
-  const pathname = usePathname();
+const Votes = ({
+  type,
+  questionId,
+  userId,
+  answerId,
+  upvotes,
+  downvotes,
+  hasUpVoted,
+  hasDownVoted,
+  hasSaved,
+}: VotesProps) => {
+  const handeSave = async () => {
+    await ToggleSaveQuestion({ userId, questionId: questionId!, path });
+  };
+  const path = usePathname();
+
+  const router = useRouter();
+
   const handleVote = async (action: "UpVote" | "DownVote") => {
+    // TODO: Auth modal + Modal Provider + zustand
+    if (!userId) return;
     try {
       if (action === "UpVote") {
-        await createUpVote({ userId, questionId, path: pathname, hasDownVoted, hasUpVoted });
+        if (type === "Question") {
+          await createUpVote({ userId, questionId: questionId!, path, hasDownVoted, hasUpVoted });
+        } else if (type === "Answer") {
+          await createUpVoteAnswer({ userId, answerId: answerId!, path, hasDownVoted, hasUpVoted });
+        }
+        // TODO: toaster
+        return;
       }
+
       if (action === "DownVote") {
-        await createDownVote({ userId, questionId, path: pathname, hasDownVoted, hasUpVoted });
+        if (type === "Question") {
+          await createDownVote({ userId, questionId: questionId!, path, hasDownVoted, hasUpVoted });
+        } else if (type === "Answer") {
+          await createDownVoteAnswer({ userId, answerId: answerId!, path, hasDownVoted, hasUpVoted });
+        }
+        // TODO: toaster
+        return;
       }
     } catch (e) {
       console.log(e);
@@ -61,14 +95,16 @@ const Votes = ({ type, questionId, userId, upvotes, downvotes, hasUpVoted, hasDo
           </div>
         </div>
       </div>
-      <Image
-        onClick={() => handeSave()}
-        className="cursor-pointer"
-        width={18}
-        height={18}
-        alt="upvote"
-        src={hasSaved ? "/assets/icons/star-filled.svg" : "/assets/icons/star-red.svg"}
-      />
+      {type === "Question" && (
+        <Image
+          onClick={() => handeSave()}
+          className="cursor-pointer"
+          width={18}
+          height={18}
+          alt="upvote"
+          src={hasSaved ? "/assets/icons/star-filled.svg" : "/assets/icons/star-red.svg"}
+        />
+      )}
     </div>
   );
 };

@@ -9,13 +9,13 @@ import Votes from "./Votes";
 
 interface AllAnswersProps {
   questionId: string;
-  authorId: string;
+  userId: string;
   totalAnswers: number;
   page?: number;
   filter?: number;
 }
 
-const AllAnswers = async ({ totalAnswers, questionId, authorId, page, filter }: AllAnswersProps) => {
+const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: AllAnswersProps) => {
   const result = await getAnswers({ questionId: questionId });
 
   return (
@@ -43,8 +43,16 @@ const AllAnswers = async ({ totalAnswers, questionId, authorId, page, filter }: 
                   </div>
                 </Link>
 
-                <div className="flex justify-end text-white">
-                  <Votes />
+                <div className="flex justify-end">
+                  <Votes
+                    type="Answer"
+                    answerId={answer._id.toString()}
+                    userId={userId}
+                    upvotes={answer.upvotes.length}
+                    downvotes={answer.downvotes.length}
+                    hasUpVoted={answer.upvotes.includes(userId)}
+                    hasDownVoted={answer.downvotes.includes(userId)}
+                  />
                 </div>
               </div>
             </div>

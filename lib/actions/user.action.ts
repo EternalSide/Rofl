@@ -2,7 +2,13 @@
 
 import User from "@/database/models/user.model";
 import connectToDatabase from "../mongoose";
-import { CreateUserParams, DeleteUserParams, GetAllUsersParams, UpdateUserParams } from "./shared.types";
+import {
+  CreateUserParams,
+  DeleteUserParams,
+  GetAllUsersParams,
+  ToggleSaveQuestionParams,
+  UpdateUserParams,
+} from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
@@ -86,6 +92,32 @@ export async function getAllUsers(params: GetAllUsersParams) {
     const users = await User.find({}).sort({ createdAt: -1 });
 
     return { users };
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function ToggleSaveQuestion(params: ToggleSaveQuestionParams) {
+  try {
+    connectToDatabase();
+    const { questionId, userId, path } = params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("Пользователь не найден.");
+    }
+
+    const isPostSaved = user.savedPosts.includes(questionId);
+
+    if (isPostSaved) {
+      await User.findByIdAndUpdate(userId, { $pull: { savedPosts: questionId } }, { new: true });
+    } else {
+      await User.findByIdAndUpdate(userId, { $addToSet: { savedPosts: questionId } }, { new: true });
+    }
+
+    revalidatePath(path);
   } catch (e) {
     console.log(e);
     throw e;

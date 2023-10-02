@@ -35,7 +35,7 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
 
           <div className="flex justify-end">
             <Votes
-              type="question"
+              type="Question"
               questionId={question._id.toString()}
               userId={user._id.toString()}
               upvotes={question.upvotes.length}
@@ -81,7 +81,11 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
         ))}
       </div>
 
-      <AllAnswers totalAnswers={question.anwsers.length} questionId={question._id} authorId={user._id.toString()} />
+      <AllAnswers
+        totalAnswers={question.anwsers.length}
+        questionId={question._id.toString()}
+        userId={user._id.toString()}
+      />
 
       <AnswerForm authorId={user._id.toString()} questionId={params.questionId} />
     </>
