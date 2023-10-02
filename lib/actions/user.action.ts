@@ -14,9 +14,8 @@ import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
-import path from "path";
 
-export async function getUserById(params: any) {
+export async function getUserById(params: { userId: string }) {
   try {
     connectToDatabase();
 
@@ -49,7 +48,7 @@ export async function updateUser(params: UpdateUserParams) {
 
     const { clerkId, updatedData, path } = params;
 
-    const updatedUser = await User.findOneAndUpdate({ clerkId: clerkId }, updatedData, { new: true });
+    await User.findOneAndUpdate({ clerkId: clerkId }, updatedData, { new: true });
 
     revalidatePath(path);
   } catch (e) {

@@ -156,7 +156,7 @@
   }
 
   .small-regular {
-    @apply text-[12px] font-normal leading-[15.6px];
+    @apply text-[12px] font-normal;
   }
 
   .small-medium {

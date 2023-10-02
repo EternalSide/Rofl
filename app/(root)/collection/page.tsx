@@ -14,7 +14,7 @@ const SavedPostPage = async () => {
 
   return (
     <>
-      <h1 className="h1-bold text-dark100_light900">Сохраненные Вопросы</h1>
+      <h1 className="h1-bold text-dark100_light900">Избранное</h1>
 
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchbar
@@ -43,12 +43,7 @@ const SavedPostPage = async () => {
             />
           ))
         ) : (
-          <NoResult
-            title="Упс! У вас нету сохраненных вопросов.."
-            description=""
-            link="/ask-question"
-            linkTitle="Новый Вопрос"
-          />
+          <NoResult title="Ничего не найдено.." description="" link="/" linkTitle="На Главную" />
         )}
       </div>
     </>

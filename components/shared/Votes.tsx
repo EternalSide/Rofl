@@ -6,7 +6,7 @@ import { ToggleSaveQuestion } from "@/lib/actions/user.action";
 
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface VotesProps {
   type: string;
@@ -43,12 +43,12 @@ const Votes = ({
   }, [questionId, answerId, path, userId]);
 
   const handleVote = async (action: "UpVote" | "DownVote") => {
-    // TODO: Auth modal + Modal Provider + zustand
     if (!userId) return;
     try {
       if (action === "UpVote") {
         if (type === "Question") {
           await createUpVote({ userId, questionId: questionId!, path, hasDownVoted, hasUpVoted });
+          setDestroyDelay(hasUpVoted);
         } else if (type === "Answer") {
           await createUpVoteAnswer({ userId, answerId: answerId!, path, hasDownVoted, hasUpVoted });
         }

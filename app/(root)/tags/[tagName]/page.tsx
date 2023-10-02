@@ -1,0 +1,51 @@
+import QuestionCard from "@/components/cards/QuestionCard";
+import NoResult from "@/components/shared/NoResult";
+import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
+import { getTagQuestion } from "@/lib/actions/tag.action";
+import { TagPageProps } from "@/types";
+
+const TagPage = async ({ params, searchParams }: TagPageProps) => {
+  const tagName = params.tagName;
+  const { tagQuestions } = await getTagQuestion({ tagName, page: 1, searchQuery: searchParams.q });
+
+  return (
+    <>
+      <h1 className="h1-bold text-dark100_light900 first-letter:uppercase">{tagName}</h1>
+      <div className="mt-11 w-full">
+        <LocalSearchbar
+          route="/"
+          iconPosition="left"
+          imgSrc="/assets/icons/search.svg"
+          placeholder={`Найти вопрос по тегу "${tagName}"`}
+          otherClasses="flex-1 w-full"
+        />
+      </div>
+
+      <div className="mt-10 flex w-full flex-col gap-6">
+        {tagQuestions?.length > 0 ? (
+          tagQuestions?.map((question: any) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              author={question.author}
+              upvotes={question.upvotes}
+              views={question.views}
+              anwsers={question.anwsers}
+              createdAt={question.createdAt}
+              tags={question.tags}
+            />
+          ))
+        ) : (
+          <NoResult
+            title="Упс! У вас нету сохраненных вопросов.."
+            description=""
+            link="/ask-question"
+            linkTitle="Новый Вопрос"
+          />
+        )}
+      </div>
+    </>
+  );
+};
+export default TagPage;

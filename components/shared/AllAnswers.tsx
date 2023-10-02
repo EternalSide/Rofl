@@ -29,14 +29,12 @@ const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: Al
           <article key={answer._id} className="light-border border-b py-10">
             <div className="flex items-center justify-between">
               <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2 w-full">
-                <Link
-                  className="flex flex-1 items-start gap-1 sm:items-center"
-                  href={`/profile/${answer.author.username}`}
-                >
+                <Link className="flex items-start gap-1 sm:items-center" href={`/profile/${answer.author.username}`}>
                   <UserAvatar imgUrl={answer.author.picture} classNames="w-[18px] h-[18px] max-sm:mt-0.5" />
+
                   <div className="flex flex-col sm:flex-row sm:items-center">
                     <p className="mr-1 body-semibold text-dark300_light700">{answer.author.name}</p>
-                    <p className="small-regular text-light400_light500 line-clamp-1 mt-0.5">
+                    <p className="small-regular text-light400_light500 line-clamp-1">
                       <span className="max-sm:hidden"> - </span>
                       {getTimestamp(answer.createdAt)}
                     </p>

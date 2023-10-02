@@ -99,7 +99,7 @@ export interface GetAllTagsParams {
 }
 
 export interface GetQuestionsByTagIdParams {
-  tagId: string;
+  tagName: string;
   page?: number;
   pageSize?: number;
   searchQuery?: string;

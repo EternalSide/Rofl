@@ -9,44 +9,6 @@ import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import { getQuestions } from "@/lib/actions/question.action";
 
-const questions = [
-  {
-    _id: "1",
-    title:
-      "The Lightning Component c:LWC_PizzaTracker generated invalid output for field status. Error How to solve this",
-    author: {
-      _id: "1",
-      name: "Jack White",
-      picture: "url_to_picture",
-    },
-    upvotes: 10,
-    views: 100,
-    anwsers: [],
-    createdAt: new Date("2023-08-01T12:00:00.000Z"),
-    tags: [
-      { _id: "1", name: "python" },
-      { _id: "2", name: "sql" },
-    ],
-  },
-  {
-    _id: "2",
-    title: "Как выровнять div?",
-    author: {
-      _id: "2",
-      name: "Jack White",
-      picture: "url_to_picture",
-    },
-    upvotes: 10,
-    views: 100,
-    anwsers: [],
-    createdAt: new Date("2022-09-01T12:00:00.000Z"),
-    tags: [
-      { _id: "3", name: "css" },
-      { _id: "4", name: "html" },
-    ],
-  },
-];
-
 export default async function MainPage() {
   const results = await getQuestions({});
 

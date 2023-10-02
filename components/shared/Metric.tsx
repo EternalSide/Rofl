@@ -20,7 +20,7 @@ const Metric = ({ imgUrl, alt, value, title, textStyles, href, isAuthor }: Metri
       </div>
 
       <p className={cn("flex items-center gap-1", textStyles)}>
-        <span className={cn("small-regular line-clamp-1", isAuthor && "max-sm:hidden pt-[4.5px]")}>{title}</span>
+        <span className={cn("small-regular line-clamp-1", isAuthor && "max-sm:hidden ")}>{title}</span>
         {value}
       </p>
     </>
