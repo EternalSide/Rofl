@@ -1,8 +1,10 @@
 import AnswerForm from "@/components/forms/AnswerForm";
+import AllAnswers from "@/components/shared/AllAnswers";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
 import UserAvatar from "@/components/shared/UserAvatar";
+import Votes from "@/components/shared/Votes";
 
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
@@ -18,7 +20,7 @@ interface QuestionPageProps {
 }
 
 const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
-  const question: any = await getQuestionById({ questionId: params.questionId });
+  const question = await getQuestionById({ questionId: params.questionId });
   const { userId } = auth();
   const user = await getUserById({ userId: userId });
 
@@ -31,7 +33,9 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
 
             <p className="text-dark300_light700 paragraph-semibold"> {question.author.name}</p>
           </Link>
-          <div className="flex justify-end">TODO: VOTING</div>
+          <div className="flex justify-end">
+            <Votes />
+          </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 text-left w-full mt-3.5">{question.title}</h2>
       </div>
@@ -63,9 +67,11 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
       <ParseHTML data={question.content} />
       <div className="mt-8 flex flex-wrap gap-2">
         {question.tags.map((tag: any) => (
-          <RenderTag key={tag._id} _id={JSON.stringify(tag._id)} showCount={false} name={tag.name} />
+          <RenderTag key={tag._id} _id={tag._id.toString()} showCount={false} name={tag.name} />
         ))}
       </div>
+
+      <AllAnswers totalAnswers={question.anwsers.length} questionId={question._id} authorId={user._id.toString()} />
 
       <AnswerForm authorId={user._id.toString()} questionId={params.questionId} />
     </>

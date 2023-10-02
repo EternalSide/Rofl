@@ -4,7 +4,7 @@ import Question from "@/database/models/question.model";
 import Answer from "@/database/models/answer.model";
 import { revalidatePath } from "next/cache";
 import connectToDatabase from "../mongoose";
-import { CreateAnswerParams } from "./shared.types";
+import { CreateAnswerParams, GetAnswersParams } from "./shared.types";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -18,9 +18,25 @@ export async function createAnswer(params: CreateAnswerParams) {
       author,
     });
 
-    const updatedQuestion = await Question.findByIdAndUpdate(question, { $push: { anwsers: newAnswer._id } });
+    await Question.findByIdAndUpdate(question, { $push: { anwsers: newAnswer._id } });
 
     revalidatePath(path);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function getAnswers(params: GetAnswersParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId } = params;
+
+    const answers = await Answer.find({ question: questionId })
+      .populate("author", "_id clerkId name picture username")
+      .sort({ createdAt: -1 });
+
+    return { answers };
   } catch (e) {
     console.log(e);
   }
