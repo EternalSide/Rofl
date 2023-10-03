@@ -1,7 +1,6 @@
 "use server";
 
 import User from "@/database/models/user.model";
-
 import connectToDatabase from "../mongoose";
 import { GetAllTagsParams, GetQuestionsByTagIdParams, GetTopUserTags } from "./shared.types";
 import Tag, { ITag } from "@/database/models/tag.model";
@@ -94,6 +93,7 @@ export async function getTagQuestion(params: GetQuestionsByTagIdParams) {
     throw e;
   }
 }
+
 export async function getPopularTags() {
   try {
     connectToDatabase();

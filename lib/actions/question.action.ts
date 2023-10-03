@@ -80,6 +80,7 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
     throw e;
   }
 }
+
 export async function createUpVote(params: QuestionVoteParams) {
   try {
     connectToDatabase();
@@ -110,6 +111,7 @@ export async function createUpVote(params: QuestionVoteParams) {
     throw e;
   }
 }
+
 export async function createDownVote(params: QuestionVoteParams) {
   try {
     connectToDatabase();

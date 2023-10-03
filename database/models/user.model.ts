@@ -1,8 +1,5 @@
 import { Schema, models, model, Document } from "mongoose";
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const linkRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
-
 export interface IUser extends Document {
   clerkId: string;
   name: string;
