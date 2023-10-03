@@ -11,10 +11,17 @@ import { BadgeCheck } from "lucide-react";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
 
-const OtherUserProfile = async ({ params }: { params: { username: string } }) => {
-  const { userId } = auth();
+interface Props {
+  params: {
+    username: string;
+  };
+  searchParams: any;
+}
+
+const OtherUserProfile = async ({ params, searchParams }: Props) => {
+  const { userId: clerkId } = auth();
   const { user, totalQuestions, totalAnswers }: any = await getUserByIdForProfile({ username: params.username });
-  const isOwnProfile: boolean = userId === user.clerkId;
+  const isOwnProfile: boolean = clerkId === user.clerkId;
 
   const isAdmin = user.username === "overflow";
 
@@ -76,10 +83,10 @@ const OtherUserProfile = async ({ params }: { params: { username: string } }) =>
             </TabsTrigger>
           </TabsList>
           <TabsContent value="top-posts">
-            <QuestionTab />
+            <QuestionTab searchParams={searchParams} userId={user._id.toString()} clerkId={clerkId} />
           </TabsContent>
           <TabsContent value="answers">
-            <AnswerTab />
+            <AnswerTab searchParams={searchParams} userId={user._id.toString()} clerkId={clerkId} />
           </TabsContent>
         </Tabs>
       </div>

@@ -184,6 +184,17 @@ export async function getSavedPosts(params: GetSavedPostsParams) {
 export async function getUserQuestions(params: GetUserStatsParams) {
   try {
     connectToDatabase();
+
+    const { userId, page, pageSize } = params;
+
+    const totalQuestions = await Question.countDocuments({ author: userId });
+
+    const userQuestions = await Question.find({ author: userId })
+      .sort({ views: -1, upvotes: -1 })
+      .populate("tags", "_id name")
+      .populate("author");
+
+    return { totalQuestions, questions: userQuestions };
   } catch (e) {
     console.log(e);
     throw e;

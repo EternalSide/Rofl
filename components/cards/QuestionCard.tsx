@@ -5,6 +5,7 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 
 interface Props {
   _id: string;
+  clerkId: string | undefined;
   title: string;
 
   tags: {
@@ -25,7 +26,7 @@ interface Props {
   createdAt: Date;
 }
 
-const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, tags }: Props) => {
+const QuestionCard = ({ _id, clerkId, title, author, upvotes, views, anwsers, createdAt, tags }: Props) => {
   const convertedDate = getTimestamp(createdAt);
   return (
     <div className="card-wrapper w-full rounded-[10px] p-9  sm:px-11">
