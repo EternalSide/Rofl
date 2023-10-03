@@ -82,10 +82,10 @@ const OtherUserProfile = async ({ params, searchParams }: Props) => {
               Ответы
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="top-posts">
+          <TabsContent value="top-posts" className="flex w-full flex-col gap-3">
             <QuestionTab searchParams={searchParams} userId={user._id.toString()} clerkId={clerkId} />
           </TabsContent>
-          <TabsContent value="answers">
+          <TabsContent value="answers" className="flex w-full flex-col gap-3 !mt-[0px]">
             <AnswerTab searchParams={searchParams} userId={user._id.toString()} clerkId={clerkId} />
           </TabsContent>
         </Tabs>

@@ -16,7 +16,7 @@ const Metric = ({ imgUrl, alt, value, title, textStyles, href, isAuthor }: Metri
   const metricContent = (
     <>
       <div className="relative h-4 w-4 -mt-[1.5px]">
-        <Image className={cn("object-contain ", href ? "rounded-full  mr-1" : "")} fill alt={alt} src={imgUrl} />
+        <Image className={cn("object-cover ", href ? "rounded-full  mr-1" : "")} fill alt={alt} src={imgUrl} />
       </div>
 
       <p className={cn("flex items-center gap-1", textStyles)}>

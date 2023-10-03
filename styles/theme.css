@@ -148,7 +148,7 @@
   }
 
   .body-medium {
-    @apply text-[14px] font-medium leading-[18.2px];
+    @apply text-[14px] font-medium;
   }
 
   .body-semibold {

@@ -200,3 +200,30 @@ export async function getUserQuestions(params: GetUserStatsParams) {
     throw e;
   }
 }
+
+export async function getUserAnswers(params: GetUserStatsParams) {
+  try {
+    connectToDatabase();
+
+    const { userId, page, pageSize } = params;
+
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+
+    const userAnswers = await Answer.find({ author: userId })
+      .sort({ upvotes: -1 })
+      .populate({
+        path: "question",
+        select: "_id title",
+        populate: {
+          path: "tags",
+          select: "_id name",
+        },
+      })
+      .populate("author", "_id clerkId name picture username");
+
+    return { totalAnswers, answers: userAnswers };
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}

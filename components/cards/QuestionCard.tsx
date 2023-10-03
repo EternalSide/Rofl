@@ -5,7 +5,7 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 
 interface Props {
   _id: string;
-  clerkId: string | undefined;
+  clerkId?: string | null;
   title: string;
 
   tags: {
@@ -51,10 +51,10 @@ const QuestionCard = ({ _id, clerkId, title, author, upvotes, views, anwsers, cr
           imgUrl={author.picture}
           alt="Author"
           value={author.name}
-          title={` - опубликовано ${convertedDate}`}
+          title={` - ${convertedDate}`}
           href={`/${author.username}`}
           isAuthor
-          textStyles="body-medium text-dark400_light700 -mt-1 flex-row-reverse"
+          textStyles="body-medium text-dark400_light700 flex-row-reverse"
         />
         <Metric
           imgUrl="/assets/icons/like.svg"
