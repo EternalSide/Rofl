@@ -5,7 +5,7 @@ let isConnected: boolean = false;
 const connectToDatabase = async () => {
   mongoose.set("strictQuery", true);
 
-  if (!process.env.MONGODB_URL) return console.log("Ошибка: Не установлен MONGODB_URL.");
+  if (!process.env.MONGODB_URL) return console.log("❌ Ошибка: В '.env.local' не установлен MONGODB_URL");
 
   if (isConnected) return;
 
@@ -14,7 +14,7 @@ const connectToDatabase = async () => {
       dbName: "Overflow",
     });
     isConnected = true;
-    console.log("Подключение с БД установлено.");
+    console.log("🚀 Соединение с БД установлено.");
   } catch (e) {
     console.log(e, "Ошибка: Проблемы с подключением к БД.");
   }

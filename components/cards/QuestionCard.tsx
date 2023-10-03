@@ -16,6 +16,7 @@ interface Props {
     _id: string;
     name: string;
     picture: string;
+    username: string;
   };
 
   upvotes: string[];
@@ -50,7 +51,7 @@ const QuestionCard = ({ _id, title, author, upvotes, views, anwsers, createdAt, 
           alt="Author"
           value={author.name}
           title={` - опубликовано ${convertedDate}`}
-          href={`/profile/${author._id}`}
+          href={`/${author.username}`}
           isAuthor
           textStyles="body-medium text-dark400_light700 -mt-1 flex-row-reverse"
         />

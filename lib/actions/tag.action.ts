@@ -94,3 +94,15 @@ export async function getTagQuestion(params: GetQuestionsByTagIdParams) {
     throw e;
   }
 }
+export async function getPopularTags() {
+  try {
+    connectToDatabase();
+
+    const popularTags = await Tag.find({}).sort({ questions: -1 }).limit(5);
+
+    return popularTags;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}

@@ -6,7 +6,8 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { cn } from "@/lib/utils";
-
+// Русский Язык для Clerk
+import { ruRU } from "@clerk/localizations";
 const inter = Inter({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -32,6 +33,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru">
       <body className={cn(inter.variable, spaceGrotesk.variable)}>
         <ClerkProvider
+          localization={ruRU}
           appearance={{
             elements: {
               formButtonPrimary: "primary-gradient",

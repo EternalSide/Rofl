@@ -21,7 +21,7 @@ const RenderTag = ({ _id, name, totalQuestions, showCount }: Props) => {
   if (!isHydrated) return null;
 
   return (
-    <Link className="flex justify-between gap-2" href={`/tags/${name.toLowerCase()}`}>
+    <Link className="flex justify-between gap-2" href={`/tags/${name}`}>
       <Badge className="subtle-medium background-light800_dark300 text-light400_light500 rounded-md border-none px-4 py-2 uppercase">
         {name}
       </Badge>

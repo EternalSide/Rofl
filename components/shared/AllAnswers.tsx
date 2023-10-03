@@ -29,7 +29,7 @@ const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: Al
           <article key={answer._id} className="light-border border-b py-10">
             <div className="flex items-center justify-between">
               <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2 w-full">
-                <Link className="flex items-start gap-1 sm:items-center" href={`/profile/${answer.author.username}`}>
+                <Link className="flex items-start gap-1 sm:items-center" href={`/${answer.author.username}`}>
                   <UserAvatar imgUrl={answer.author.picture} classNames="w-[18px] h-[18px] max-sm:mt-0.5" />
 
                   <div className="flex flex-col sm:flex-row sm:items-center">

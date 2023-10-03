@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import RenderTag from "../RenderTag";
+import { getPopularTags } from "@/lib/actions/tag.action";
 
-const RightSidebar = () => {
+const RightSidebar = async () => {
+  // TODO: Выбрать 5 свежих вопросов у которых больше всего комментариев.
   const fakeData = [
     {
       text: "Уместно ли во время рецензирования указать на ошибку в другой статье?",
@@ -20,28 +22,9 @@ const RightSidebar = () => {
       text: "What is an example of 3 numbers that do not make up a vector?",
     },
   ];
-  const fakeDataTags = [
-    {
-      tagName: "JAVASCRIPT",
-      number: "20152+",
-    },
-    {
-      tagName: "Next.js",
-      number: "20152+",
-    },
-    {
-      tagName: "React.js",
-      number: "20152+",
-    },
-    {
-      tagName: "node.js",
-      number: "20152+",
-    },
-    {
-      tagName: "python",
-      number: "20152+",
-    },
-  ];
+
+  const popularTags = await getPopularTags();
+
   return (
     <section
       className="background-light900_dark200
@@ -51,15 +34,15 @@ const RightSidebar = () => {
       <div>
         <h3 className="h3-bold text-dark200_light900">Обсуждаемое</h3>
         <div className="mt-7 flex w-full flex-col gap-[30px]">
-          {fakeData.map((item) => (
-            <Link href={item.text} key={item.text} className="flex items-center justify-between gap-7">
-              <p className="body-medium text-dark500_light700">{item.text}</p>
+          {fakeData.map((tag: any) => (
+            <Link href={tag.text} key={tag.text} className="flex items-center justify-between gap-7">
+              <p className="body-medium text-dark500_light700">{tag.text}</p>
               <Image
                 src="/assets/icons/chevron-right.svg"
                 className="invert-colors"
                 width={20}
                 height={20}
-                alt="Shevron"
+                alt={tag.text}
               />
             </Link>
           ))}
@@ -69,8 +52,14 @@ const RightSidebar = () => {
       <div className="mt-16">
         <h3 className="h3-bold text-dark200_light900">Популярные Теги</h3>
         <div className="mt-7 flex flex-col gap-4">
-          {fakeDataTags.map((item) => (
-            <RenderTag key={item.number} _id={item.number} name={item.tagName} totalQuestions={item.number} showCount />
+          {popularTags.map((tag) => (
+            <RenderTag
+              key={tag.name}
+              _id={tag._id.toString()}
+              name={tag.name}
+              totalQuestions={tag.questions.length}
+              showCount
+            />
           ))}
         </div>
       </div>

@@ -14,6 +14,7 @@ import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
+import Answer from "@/database/models/answer.model";
 
 export async function getUserById(params: { userId: string }) {
   try {
@@ -24,6 +25,25 @@ export async function getUserById(params: { userId: string }) {
     const user = await User.findOne({ clerkId: userId });
 
     return user;
+  } catch (e) {
+    console.log(e);
+  }
+}
+export async function getUserByIdForProfile(params: { username: string }) {
+  try {
+    connectToDatabase();
+
+    const { username } = params;
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return null;
+    }
+
+    const totalQuestions = await Question.countDocuments({ author: user._id });
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
+
+    return { user, totalQuestions, totalAnswers };
   } catch (e) {
     console.log(e);
   }

@@ -20,7 +20,7 @@ interface UserCardProps {
 const UserCard = async ({ user }: UserCardProps) => {
   const userTopTags = await getTopUserTags({ userId: user._id });
   return (
-    <Link href={`/profile/${user.username}`} className="shadow-light100_darknone w-full max-xs:min-w-full xs:w-[260px]">
+    <Link href={`/${user.username}`} className="shadow-light100_darknone w-full max-xs:min-w-full xs:w-[260px]">
       <div className="background-light900_dark200 light-border w-full flex flex-col items-center justify-center rounded-2xl border p-8">
         <UserAvatar imgUrl={user.picture} classNames="h-[100px] w-[100px]" />
 

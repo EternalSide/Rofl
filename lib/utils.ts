@@ -41,6 +41,7 @@ export const getTimestamp = (createdAt: Date): string => {
   }
 };
 
+// Округление чисел (число просмотров, лайков, комментов)
 export const formatAndDivideNumber = (num: number): number | string => {
   if (num >= 1000000) {
     const formattedNum = (num / 1000000).toFixed(1);
@@ -52,3 +53,26 @@ export const formatAndDivideNumber = (num: number): number | string => {
     return num;
   }
 };
+
+export function formatDate(inputDate: string): string {
+  const date = new Date(inputDate);
+  const monthNames = [
+    "январь",
+    "февраль",
+    "март",
+    "апрель",
+    "май",
+    "июнь",
+    "июль",
+    "август",
+    "сентябрь",
+    "октябрь",
+    "ноябрь",
+    "декабрь",
+  ];
+
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  return `Регистрация: ${monthNames[month]} ${year}`;
+}

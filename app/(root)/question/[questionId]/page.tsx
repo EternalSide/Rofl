@@ -28,7 +28,7 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
     <>
       <div className="flex-start w-full flex-col">
         <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
-          <Link className="flex items-center justify-start gap-1" href={`/profile/${question.author.username}`}>
+          <Link className="flex items-center justify-start gap-1" href={`/${question.author.username}`}>
             <UserAvatar imgUrl={question.author.picture} classNames="h-[22px] w-[22px]" />
             <p className="text-dark300_light700 paragraph-semibold"> {question.author.name}</p>
           </Link>
