@@ -32,6 +32,7 @@ const Votes = ({
   hasSaved,
 }: VotesProps) => {
   const handeSave = async () => {
+    if (!userId) return;
     await ToggleSaveQuestion({ userId, questionId: questionId!, path });
   };
   const path = usePathname();

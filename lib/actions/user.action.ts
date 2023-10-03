@@ -7,6 +7,7 @@ import {
   DeleteUserParams,
   GetAllUsersParams,
   GetSavedPostsParams,
+  GetUserStatsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
@@ -16,7 +17,7 @@ import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
 import Answer from "@/database/models/answer.model";
 
-export async function getUserById(params: { userId: string }) {
+export async function getUserById(params: { userId: string | null }) {
   try {
     connectToDatabase();
 
@@ -29,6 +30,7 @@ export async function getUserById(params: { userId: string }) {
     console.log(e);
   }
 }
+
 export async function getUserByIdForProfile(params: { username: string }) {
   try {
     connectToDatabase();
@@ -173,6 +175,15 @@ export async function getSavedPosts(params: GetSavedPostsParams) {
     }
     const savedQuestions = user.savedPosts;
     return { questions: savedQuestions };
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function getUserQuestions(params: GetUserStatsParams) {
+  try {
+    connectToDatabase();
   } catch (e) {
     console.log(e);
     throw e;

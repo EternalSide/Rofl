@@ -36,7 +36,6 @@ export interface SearchParamsProps {
 
 export interface TagPageProps {
   params: { tagName: string };
-  TagPageProps;
   searchParams: { [key: string]: string | undefined };
 }
 
