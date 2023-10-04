@@ -35,7 +35,7 @@ export const useTheme = () => {
   const context = useContext(ThemeContext);
 
   if (context === undefined) {
-    throw new Error("Ошибка, возможная причина: Layout.tsx не обернут в ThemeProvider");
+    throw new Error("Ошибка, возможная причина: Layout.tsx не обернут в ThemeProvider.");
   }
   return context;
 };

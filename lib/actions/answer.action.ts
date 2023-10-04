@@ -4,7 +4,8 @@ import Question from "@/database/models/question.model";
 import Answer from "@/database/models/answer.model";
 import { revalidatePath } from "next/cache";
 import connectToDatabase from "../mongoose";
-import { AnswerVoteParams, CreateAnswerParams, GetAnswersParams } from "./shared.types";
+import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.types";
+import Interaction from "@/database/models/interaction.model";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -96,6 +97,28 @@ export async function createDownVoteAnswer(params: AnswerVoteParams) {
     if (!answer) {
       throw new Error("Комментарий не найден.");
     }
+
+    revalidatePath(path);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function deleteAnswer(params: DeleteAnswerParams) {
+  try {
+    connectToDatabase();
+    const { answerId, path } = params;
+
+    const answer = await Answer.findByIdAndDelete(answerId);
+
+    if (!answer) {
+      throw new Error("Ответ не найден.");
+    }
+
+    // await answer.deleteOne({ _id: answerId });
+    await Question.updateMany({ _id: answer.question }, { $pull: { anwsers: answerId } });
+    await Interaction.deleteMany({ answer: answerId });
 
     revalidatePath(path);
   } catch (e) {

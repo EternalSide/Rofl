@@ -1,7 +1,6 @@
 import Navbar from "@/components/shared/Navbar/Navbar";
 import LeftSidebar from "@/components/shared/Sidebar/LeftSidebar";
 import RightSidebar from "@/components/shared/Sidebar/RightSidebar";
-import { sendSomeFakeData } from "@/lib/actions/test.action";
 import React from "react";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {

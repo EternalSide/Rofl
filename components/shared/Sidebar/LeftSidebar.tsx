@@ -24,7 +24,7 @@ const LeftSidebar = () => {
             return (
               <Link
                 key={item.route}
-                href={`/${user?.username}`}
+                href={user?.username ? `/${user?.username}` : "/sign-in"}
                 className={cn(
                   "flex items-center justify-start gap-4 bg-transparent p-4 group",
                   isProfileOpen ? "primary-gradient rounded-lg text-light-900" : "text-dark300_light900",

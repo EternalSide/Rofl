@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const HomeFilters = () => {
+  // * Хардкод
   const active = "newest";
   return (
     <div className="mt-10 flex-wrap gap-3 md:flex hidden">

@@ -22,7 +22,6 @@ const OtherUserProfile = async ({ params, searchParams }: Props) => {
   const { userId: clerkId } = auth();
   const { user, totalQuestions, totalAnswers }: any = await getUserByIdForProfile({ username: params.username });
   const isOwnProfile: boolean = clerkId === user.clerkId;
-
   const isAdmin = user.username === "overflow";
 
   if (!user) {

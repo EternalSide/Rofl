@@ -22,7 +22,7 @@ const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: Al
     <div className="mt-11">
       <div className="flex items-center justify-between">
         <h3 className="primary-text-gradient">Ответов: {totalAnswers}</h3>
-        <Filter filters={AnswerFilters} />
+        {totalAnswers > 0 && <Filter filters={AnswerFilters} />}
       </div>
       <div>
         {result?.answers.map((answer) => (

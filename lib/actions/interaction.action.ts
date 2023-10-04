@@ -7,12 +7,12 @@ import Interaction from "@/database/models/interaction.model";
 
 export async function viewQuestion(params: ViewQuestionParams) {
   try {
-    await connectToDatabase();
+    connectToDatabase();
 
     const { questionId, userId } = params;
 
     // Увеличить просмотры поста.
-    const question = await Question.findByIdAndUpdate(questionId, { $inc: { views: 1 } });
+    await Question.findByIdAndUpdate(questionId, { $inc: { views: 1 } });
 
     if (userId) {
       const existingInteraction = await Interaction.findOne({ user: userId, action: "view", question: questionId });

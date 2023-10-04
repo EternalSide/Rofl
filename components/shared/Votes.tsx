@@ -20,6 +20,8 @@ interface VotesProps {
   hasSaved?: boolean;
 }
 
+type ActionVoteType = "UpVote" | "DownVote";
+
 const Votes = ({
   type,
   questionId,
@@ -31,18 +33,21 @@ const Votes = ({
   hasDownVoted,
   hasSaved,
 }: VotesProps) => {
-  const handeSave = async () => {
-    if (!userId) return;
-    await ToggleSaveQuestion({ userId, questionId: questionId!, path });
-  };
   const path = usePathname();
 
   useEffect(() => {
     viewQuestion({ questionId: questionId!, userId: userId ? userId : undefined });
   }, [questionId, answerId, path, userId]);
 
-  const handleVote = async (action: "UpVote" | "DownVote") => {
+  const handeSave = async (): Promise<void> => {
     if (!userId) return;
+
+    await ToggleSaveQuestion({ userId, questionId: questionId!, path });
+  };
+
+  const handleVote = async (action: ActionVoteType): Promise<void> => {
+    if (!userId) return;
+
     try {
       if (action === "UpVote") {
         if (type === "Question") {
@@ -50,6 +55,7 @@ const Votes = ({
         } else if (type === "Answer") {
           await createUpVoteAnswer({ userId, answerId: answerId!, path, hasDownVoted, hasUpVoted });
         }
+
         // TODO: toaster
         return;
       }
@@ -99,6 +105,7 @@ const Votes = ({
           </div>
         </div>
       </div>
+
       {type === "Question" && (
         <Image
           onClick={() => handeSave()}

@@ -14,6 +14,7 @@ import { auth } from "@clerk/nextjs";
 
 import Link from "next/link";
 import { Metadata, ResolvingMetadata } from "next";
+import { redirect } from "next/navigation";
 
 interface QuestionPageProps {
   params: { questionId: string };
@@ -34,6 +35,7 @@ interface QuestionPageProps {
 
 const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
   const question = await getQuestionById({ questionId: params.questionId });
+
   const { userId } = auth();
   const user = await getUserById({ userId: userId });
 
@@ -50,12 +52,12 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
             <Votes
               type="Question"
               questionId={question._id.toString()}
-              userId={user._id.toString()}
+              userId={user?._id.toString() || null}
               upvotes={question.upvotes.length}
               downvotes={question.downvotes.length}
-              hasUpVoted={question.upvotes.includes(user._id)}
-              hasDownVoted={question.downvotes.includes(user._id)}
-              hasSaved={user.savedPosts.includes(question._id)}
+              hasUpVoted={question.upvotes.includes(user?._id)}
+              hasDownVoted={question.downvotes.includes(user?._id)}
+              hasSaved={user?.savedPosts.includes(question._id)}
             />
           </div>
         </div>
@@ -97,10 +99,10 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
       <AllAnswers
         totalAnswers={question.anwsers.length}
         questionId={question._id.toString()}
-        userId={user._id.toString()}
+        userId={user?._id.toString()}
       />
 
-      <AnswerForm authorId={user._id.toString()} questionId={params.questionId} />
+      <AnswerForm authorId={user?._id.toString()} questionId={params.questionId} />
     </>
   );
 };

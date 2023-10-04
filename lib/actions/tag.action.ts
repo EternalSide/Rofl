@@ -94,12 +94,12 @@ export async function getTagQuestion(params: GetQuestionsByTagIdParams) {
   }
 }
 
+// ! Не работает.
 export async function getPopularTags() {
   try {
     connectToDatabase();
 
-    const popularTags = await Tag.find({}).sort({ questions: -1 }).limit(5);
-
+    const popularTags = await Tag.find({}).sort({ questionsLength: -1 }).limit(5);
     return popularTags;
   } catch (e) {
     console.log(e);

@@ -3,11 +3,21 @@
 import Question from "@/database/models/question.model";
 import connectToDatabase from "../mongoose";
 import Tag from "@/database/models/tag.model";
-import { CreateQuestionParams, GetQuestionByIdParams, GetQuestionsParams, QuestionVoteParams } from "./shared.types";
+import {
+  CreateQuestionParams,
+  DeleteQuestionParams,
+  EditQuestionParams,
+  GetQuestionByIdParams,
+  GetQuestionsParams,
+  QuestionVoteParams,
+} from "./shared.types";
 import User from "@/database/models/user.model";
 import { revalidatePath } from "next/cache";
 
 import console from "console";
+import { redirect } from "next/navigation";
+import Answer from "@/database/models/answer.model";
+import Interaction from "@/database/models/interaction.model";
 
 export async function createQuestion(params: CreateQuestionParams) {
   try {
@@ -39,11 +49,11 @@ export async function createQuestion(params: CreateQuestionParams) {
       tagDocuments.push(existingTag._id);
     }
 
-    await Question.findByIdAndUpdate(newQuestion._id, {
+    const finalQuestion = await Question.findByIdAndUpdate(newQuestion._id, {
       $push: { tags: { $each: tagDocuments } },
     });
-
     revalidatePath(path);
+    return finalQuestion._id.toString();
   } catch (e) {
     console.log(e);
   }
@@ -77,7 +87,7 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
     return question;
   } catch (e) {
     console.log(e);
-    throw e;
+    redirect("/");
   }
 }
 
@@ -135,6 +145,45 @@ export async function createDownVote(params: QuestionVoteParams) {
     if (!question) {
       throw new Error("Вопрос не найден.");
     }
+
+    revalidatePath(path);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function deleteQuestion(params: DeleteQuestionParams) {
+  try {
+    connectToDatabase();
+    const { questionId, path } = params;
+
+    await Question.findByIdAndDelete(questionId);
+    await Answer.deleteMany({ question: questionId });
+    await Interaction.deleteMany({ question: questionId });
+    await Tag.updateMany({ questions: questionId }, { $pull: { questions: questionId } });
+
+    // await User.findByIdAndUpdate(authorId, { $pull: { questions: questionId } }, { new: true });
+
+    revalidatePath(path);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function editQuestion(params: EditQuestionParams) {
+  try {
+    connectToDatabase();
+    const { questionId, title, content, path } = params;
+
+    const question = await Question.findById(questionId).populate("tags");
+    if (!question) {
+      throw new Error("Вопрос не найден.");
+    }
+    question.title = title;
+    question.content = content;
+    await question.save();
 
     revalidatePath(path);
   } catch (e) {
