@@ -191,3 +191,16 @@ export async function editQuestion(params: EditQuestionParams) {
     throw e;
   }
 }
+
+export async function getPopularQuestions() {
+  try {
+    connectToDatabase();
+
+    const popularQuestions = await Question.find({}).sort({ views: -1, upvotes: -1 }).limit(5).select("_id title");
+
+    return popularQuestions;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}

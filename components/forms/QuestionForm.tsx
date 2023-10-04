@@ -23,13 +23,17 @@ interface QuestionFormProps {
 }
 
 const QuestionForm = ({ type, questionDetails, mongoUserId }: QuestionFormProps) => {
-  const parsedQuestionDetails = JSON.parse(questionDetails || "");
-  const groupedTags = parsedQuestionDetails.tags.map((tag) => tag.name);
+  let parsedQuestionDetails: any;
+  if (type === "Edit") {
+    parsedQuestionDetails = JSON.parse(questionDetails || "");
+  }
+
+  const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
   const form = useForm<z.infer<typeof Questions_Schema>>({
     resolver: zodResolver(Questions_Schema),
     defaultValues: {
-      title: parsedQuestionDetails.title || "",
-      explanation: parsedQuestionDetails.content || "",
+      title: parsedQuestionDetails?.title || "",
+      explanation: parsedQuestionDetails?.content || "",
       tags: groupedTags || [],
     },
   });
@@ -136,7 +140,7 @@ const QuestionForm = ({ type, questionDetails, mongoUserId }: QuestionFormProps)
                   }}
                   onBlur={field.onBlur}
                   onEditorChange={(content) => field.onChange(content)}
-                  initialValue={parsedQuestionDetails.content || ""}
+                  initialValue={parsedQuestionDetails?.content || ""}
                   init={{
                     height: 350,
                     menubar: false,

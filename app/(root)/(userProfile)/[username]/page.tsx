@@ -11,17 +11,17 @@ import { BadgeCheck } from "lucide-react";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
 
-interface Props {
+export interface UserProps {
   params: {
     username: string;
   };
   searchParams: any;
 }
 
-const OtherUserProfile = async ({ params, searchParams }: Props) => {
+const UserProfile = async ({ params, searchParams }: UserProps) => {
   const { userId: clerkId } = auth();
   const { user, totalQuestions, totalAnswers }: any = await getUserByIdForProfile({ username: params.username });
-  const isOwnProfile: boolean = clerkId === user.clerkId;
+  const isOwnProfile = clerkId && clerkId === user.clerkId;
   const isAdmin = user.username === "overflow";
 
   if (!user) {
@@ -46,7 +46,7 @@ const OtherUserProfile = async ({ params, searchParams }: Props) => {
 
             <div className="mt-5 flex flex-wrap items-center justify-start gap-5">
               {user.portfolioWebsite && (
-                <ProfileLink imgUrl="/assets/icons/link.svg" title="Портфолио" href={user.portfolioWebsite} />
+                <ProfileLink imgUrl="/assets/icons/link.svg" title="Вебсайт" href={user.portfolioWebsite} />
               )}
               {user.location && <ProfileLink imgUrl="/assets/icons/location.svg" title={user.location} />}
               {<ProfileLink imgUrl="/assets/icons/calendar.svg" title={formatDate(user.joinedAt.toString())} />}
@@ -59,7 +59,7 @@ const OtherUserProfile = async ({ params, searchParams }: Props) => {
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
           <SignedIn>
             {isOwnProfile && (
-              <Link href="/profile/edit">
+              <Link href={`/${user.username}/edit`}>
                 <Button className="btn-secondary paragraph-medium text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
                   Редактировать
                 </Button>
@@ -92,4 +92,4 @@ const OtherUserProfile = async ({ params, searchParams }: Props) => {
     </>
   );
 };
-export default OtherUserProfile;
+export default UserProfile;
