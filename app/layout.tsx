@@ -21,10 +21,10 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "OverFlow",
-  description: "A place to share knowledge and better understand the world (Фига Копайлот как умеет текста писать)",
+  title: "Ru-OverFlow",
+  description: "Вопросы и ответы для программистов.",
   icons: {
-    icon: "/assets/images/site-logo.svg",
+    icon: "./favicon.ico",
   },
 };
 

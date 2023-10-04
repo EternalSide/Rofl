@@ -15,6 +15,7 @@ import { auth } from "@clerk/nextjs";
 import Link from "next/link";
 import { Metadata, ResolvingMetadata } from "next";
 import { redirect } from "next/navigation";
+import generateChappyAnswer from "@/lib/chappi";
 
 interface QuestionPageProps {
   params: { questionId: string };
@@ -38,6 +39,15 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
 
   const { userId } = auth();
   const user = await getUserById({ userId: userId });
+  // * хардкод
+  let chappyAlowed = true;
+
+  // if (chappyAlowed) {
+  //   await generateChappyAnswer({
+  //     questionId: params.questionId,
+  //     questionText: question.content,
+  //   });
+  // }
 
   return (
     <>

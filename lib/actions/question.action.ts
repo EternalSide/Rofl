@@ -49,11 +49,14 @@ export async function createQuestion(params: CreateQuestionParams) {
       tagDocuments.push(existingTag._id);
     }
 
-    const finalQuestion = await Question.findByIdAndUpdate(newQuestion._id, {
+    const id = newQuestion._id.toString();
+
+    await Question.findByIdAndUpdate(id, {
       $push: { tags: { $each: tagDocuments } },
     });
+
     revalidatePath(path);
-    return finalQuestion._id.toString();
+    return id;
   } catch (e) {
     console.log(e);
   }
@@ -78,6 +81,7 @@ export async function getQuestions(params: GetQuestionsParams) {
 export async function getQuestionById(params: GetQuestionByIdParams) {
   try {
     connectToDatabase();
+
     const { questionId } = params;
     const question = await Question.findById(questionId)
       .populate({ path: "tags", model: Tag, select: "_id name" })

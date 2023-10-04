@@ -20,11 +20,11 @@ export interface UserProps {
 
 const UserProfile = async ({ params, searchParams }: UserProps) => {
   const { userId: clerkId } = auth();
-  const { user, totalQuestions, totalAnswers }: any = await getUserByIdForProfile({ username: params.username });
-  const isOwnProfile = clerkId && clerkId === user.clerkId;
-  const isAdmin = user.username === "overflow";
+  const data = await getUserByIdForProfile({ username: params.username });
+  const isOwnProfile = clerkId && clerkId === data?.user.clerkId;
+  const isAdmin = data?.user.username === "overflow";
 
-  if (!user) {
+  if (!data?.user) {
     return (
       <div>
         <h1 className="h1-bold text-dark100_light900">Учетной записи не существует.</h1>
@@ -36,30 +36,30 @@ const UserProfile = async ({ params, searchParams }: UserProps) => {
     <>
       <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
         <div className="flex flex-col items-start gap-4 lg:flex-row">
-          <UserAvatar alt={`Фото ${user.name}`} imgUrl={user.picture} classNames="w-[140px] h-[140px]" />
+          <UserAvatar alt={`Фото ${data.user.name}`} imgUrl={data.user.picture} classNames="w-[140px] h-[140px]" />
           <div className="mt-3">
             <div className="flex items-center gap-1">
-              <h2 className="h2-bold text-dark100_light900">{user.name}</h2>
+              <h2 className="h2-bold text-dark100_light900">{data.user.name}</h2>
               {isAdmin && <BadgeCheck color="#ff7000" className="primary-text-gradient h-5 w-5" />}
             </div>
-            <p className="parapgraph-regular text-dark200_light800">@{user.username}</p>
+            <p className="parapgraph-regular text-dark200_light800">@{data.user.username}</p>
 
             <div className="mt-5 flex flex-wrap items-center justify-start gap-5">
-              {user.portfolioWebsite && (
-                <ProfileLink imgUrl="/assets/icons/link.svg" title="Вебсайт" href={user.portfolioWebsite} />
+              {data.user.portfolioWebsite && (
+                <ProfileLink imgUrl="/assets/icons/link.svg" title="Вебсайт" href={data.user.portfolioWebsite} />
               )}
-              {user.location && <ProfileLink imgUrl="/assets/icons/location.svg" title={user.location} />}
-              {<ProfileLink imgUrl="/assets/icons/calendar.svg" title={formatDate(user.joinedAt.toString())} />}
+              {data.user.location && <ProfileLink imgUrl="/assets/icons/location.svg" title={data.user.location} />}
+              {<ProfileLink imgUrl="/assets/icons/calendar.svg" title={formatDate(data.user.joinedAt.toString())} />}
             </div>
 
-            {user.bio && <p className="parapgraph-regular text-dark400_light800 mt-8">{user.bio}</p>}
+            {data.user.bio && <p className="parapgraph-regular text-dark400_light800 mt-8">{data.user.bio}</p>}
           </div>
         </div>
 
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
           <SignedIn>
             {isOwnProfile && (
-              <Link href={`/${user.username}/edit`}>
+              <Link href={`/${data.user.username}/edit`}>
                 <Button className="btn-secondary paragraph-medium text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
                   Редактировать
                 </Button>
@@ -69,7 +69,7 @@ const UserProfile = async ({ params, searchParams }: UserProps) => {
         </div>
       </div>
 
-      <Stats totalQuestions={totalQuestions} totalAnswers={totalAnswers} />
+      <Stats totalQuestions={data.totalQuestions} totalAnswers={data.totalAnswers} />
 
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-posts" className="flex-1">
@@ -82,10 +82,10 @@ const UserProfile = async ({ params, searchParams }: UserProps) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="top-posts" className="flex w-full flex-col gap-3">
-            <QuestionTab searchParams={searchParams} userId={user._id.toString()} clerkId={clerkId} />
+            <QuestionTab searchParams={searchParams} userId={data.user._id.toString()} clerkId={clerkId} />
           </TabsContent>
           <TabsContent value="answers" className="flex w-full flex-col gap-3 !mt-[0px]">
-            <AnswerTab searchParams={searchParams} userId={user._id.toString()} clerkId={clerkId} />
+            <AnswerTab searchParams={searchParams} userId={data.user._id.toString()} clerkId={clerkId} />
           </TabsContent>
         </Tabs>
       </div>
