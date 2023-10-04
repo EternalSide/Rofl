@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteAnswer } from "@/lib/actions/answer.action";
-import { deleteQuestion, editUserQuestion } from "@/lib/actions/question.action";
+import { deleteQuestion } from "@/lib/actions/question.action";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -24,7 +24,6 @@ const EditDelete = ({ type, itemId, authorId }: Props) => {
 
   const handleEdit = async (): Promise<void> => {
     router.push(`/question/edit/${itemId}`);
-    // await editUserQuestion({ itemId, authorId, path });
   };
 
   return (
