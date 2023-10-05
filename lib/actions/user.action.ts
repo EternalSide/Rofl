@@ -7,6 +7,8 @@ import {
   DeleteUserParams,
   GetAllUsersParams,
   GetSavedPostsParams,
+  GetUserByIdParams,
+  GetUserByUsernameParams,
   GetUserStatsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
@@ -17,7 +19,7 @@ import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
 import Answer from "@/database/models/answer.model";
 
-export async function getUserById(params: { userId: string | null }) {
+export async function getUserById(params: GetUserByIdParams) {
   try {
     connectToDatabase();
 
@@ -31,13 +33,14 @@ export async function getUserById(params: { userId: string | null }) {
   }
 }
 
-export async function getUserByIdForProfile(params: { username: string }) {
+export async function getUserByUsername(params: GetUserByUsernameParams) {
   try {
     connectToDatabase();
 
     const { username } = params;
 
     const user = await User.findOne({ username });
+
     if (!user) {
       return null;
     }
@@ -173,7 +176,9 @@ export async function getSavedPosts(params: GetSavedPostsParams) {
     if (!user) {
       throw new Error("Пользователь не найден");
     }
+
     const savedQuestions = user.savedPosts;
+
     return { questions: savedQuestions };
   } catch (e) {
     console.log(e);

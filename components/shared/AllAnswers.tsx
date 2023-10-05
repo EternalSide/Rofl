@@ -34,7 +34,7 @@ const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: Al
 
                   <div className="flex flex-col sm:flex-row sm:items-center">
                     <p className="mr-1 body-semibold text-dark300_light700">{answer.author.name}</p>
-                    <p className="small-regular text-light400_light500 line-clamp-1">
+                    <p className="small-regular text-light400_light500 line-clamp-1 sm:pt-[1px]">
                       <span className="max-sm:hidden"> - </span>
                       {getTimestamp(answer.createdAt)}
                     </p>

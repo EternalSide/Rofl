@@ -35,7 +35,7 @@ const LeftSidebar = () => {
                   alt={item.label}
                   width={20}
                   height={20}
-                  className={cn(isActive ? "" : "invert-colors")}
+                  className={cn(isProfileOpen ? "" : "invert-colors")}
                 />
                 <p className={cn("max-lg:hidden ", profileHover, isActive)}>{item.label}</p>
               </Link>

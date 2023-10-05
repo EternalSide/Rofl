@@ -1,5 +1,10 @@
 import { Schema, models, model, Document } from "mongoose";
 
+enum UserRoles {
+  default,
+  admin,
+}
+
 export interface IUser extends Document {
   clerkId: string;
   name: string;
@@ -12,6 +17,7 @@ export interface IUser extends Document {
   portfolioWebsite?: string;
   reputation?: number;
   joinedAt: Date;
+  role: UserRoles;
   posts: Schema.Types.ObjectId[];
   savedPosts: Schema.Types.ObjectId[];
 }
@@ -30,6 +36,7 @@ const UserSchema = new Schema<IUser>(
     reputation: { type: Number, default: 0 },
     savedPosts: [{ type: Schema.Types.ObjectId, ref: "Question" }],
     joinedAt: { type: Date, default: Date.now },
+    role: { type: Number, enum: UserRoles, default: UserRoles.default },
   },
   {
     versionKey: false,

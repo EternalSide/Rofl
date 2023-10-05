@@ -1,6 +1,5 @@
+import { IUser } from "@/database/models/user.model";
 import { Schema } from "mongoose";
-
-import { IUser } from "@/mongodb";
 
 export interface CreateAnswerParams {
   content: string;
@@ -119,6 +118,9 @@ export interface CreateUserParams {
 
 export interface GetUserByIdParams {
   userId: string;
+}
+export interface GetUserByUsernameParams {
+  username: string;
 }
 
 export interface GetAllUsersParams {

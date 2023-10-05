@@ -1,6 +1,6 @@
 import UserAvatar from "@/components/shared/UserAvatar";
 import { Button } from "@/components/ui/button";
-import { getUserByIdForProfile } from "@/lib/actions/user.action";
+import { getUserByUsername } from "@/lib/actions/user.action";
 import { SignedIn, auth } from "@clerk/nextjs";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,17 +10,15 @@ import Stats from "@/components/shared/Stats";
 import { BadgeCheck } from "lucide-react";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
+import { ParamsProps } from "@/types";
 
-export interface UserProps {
-  params: {
-    username: string;
-  };
+export interface UserProps extends ParamsProps {
   searchParams: any;
 }
 
 const UserProfile = async ({ params, searchParams }: UserProps) => {
   const { userId: clerkId } = auth();
-  const data = await getUserByIdForProfile({ username: params.username });
+  const data = await getUserByUsername({ username: params.username });
   const isOwnProfile = clerkId && clerkId === data?.user.clerkId;
   const isAdmin = data?.user.username === "overflow";
 

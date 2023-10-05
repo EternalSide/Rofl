@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 const SavedPostPage = async () => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
+
   const { questions } = await getSavedPosts({ clerkId: userId });
 
   return (

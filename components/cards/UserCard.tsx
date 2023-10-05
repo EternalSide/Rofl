@@ -1,4 +1,3 @@
-import Image from "next/image";
 import RenderTag from "@/components/shared/RenderTag";
 import Link from "next/link";
 import getTopUserTags from "@/lib/actions/tag.action";

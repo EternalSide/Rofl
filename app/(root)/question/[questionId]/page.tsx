@@ -16,30 +16,35 @@ import Link from "next/link";
 import { Metadata, ResolvingMetadata } from "next";
 import { redirect } from "next/navigation";
 import generateChappyAnswer from "@/lib/chappi";
+import { type } from "os";
 
 interface QuestionPageProps {
   params: { questionId: string };
   searchParams: any;
 }
 
-// * Смена заголовка
-// export async function generateMetadata(
-//   { params, searchParams }: QuestionPageProps,
-//   parent: ResolvingMetadata,
-// ): Promise<Metadata> {
-//   const question = await getQuestionById({ questionId: params.questionId });
+// ! Смена заголовка
 
-//   return {
-//     title: `OverFlow | ${question.title}`,
-//   };
-// }
-
-const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
+export async function generateMetadata(
+  { params, searchParams }: QuestionPageProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const question = await getQuestionById({ questionId: params.questionId });
 
+  return {
+    title: `OverFlow | ${question.title}`,
+  };
+}
+
+const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
   const { userId } = auth();
-  const user = await getUserById({ userId: userId });
-  // * хардкод
+  if (!userId) return null;
+
+  const question = await getQuestionById({ questionId: params.questionId });
+
+  const user = await getUserById({ userId });
+
+  // ! Xардкод
   let chappyAlowed = true;
 
   // if (chappyAlowed) {

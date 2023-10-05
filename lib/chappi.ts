@@ -28,10 +28,11 @@ export default async function generateChappyAnswer(params: ChappiProps) {
 
   try {
     connectToDatabase();
-    if (!DISABLED_NOTIFICATIONS) console.log("Чаппи послал запрос к OpenAI. Ожидайте Ответа.");
-
     // Ответ От ChatGPT
+    if (!DISABLED_NOTIFICATIONS) console.log("Послал запрос к OpenAI. Ожидайте Ответа.");
+
     const { questionText, questionId } = params;
+
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
@@ -42,20 +43,22 @@ export default async function generateChappyAnswer(params: ChappiProps) {
       ],
     });
 
-    const chappiAnswer = response.data?.choices[0]?.message?.content;
-    if (!DISABLED_NOTIFICATIONS) console.log("Ответ получен, записываю в БД.");
+    const chatGPT_answer = response.data?.choices[0]?.message?.content;
 
     // Добавим в Бд Ответ от Chappi
+    if (!DISABLED_NOTIFICATIONS) console.log("Ответ получен, записываю в БД.");
+
     const newAnswer = await Answer.create({
       question: questionId,
-      content: chappiAnswer,
+      content: chatGPT_answer,
       author: "651d4496ca6504af7ba2c7cf",
     });
+
     // Обновим исходный  вопрос
     await Question.findByIdAndUpdate(questionId, { $push: { anwsers: newAnswer._id } });
 
-    if (!DISABLED_NOTIFICATIONS) console.log("Работа закончена, ответ добавлен.");
+    if (!DISABLED_NOTIFICATIONS) return console.log("Ответ добавлен, работа закончена.");
   } catch (e) {
-    console.log(e);
+    console.log(e, "Чаппи сломался.");
   }
 }

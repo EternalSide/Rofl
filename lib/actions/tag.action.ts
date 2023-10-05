@@ -7,6 +7,7 @@ import Tag, { ITag } from "@/database/models/tag.model";
 import { redirect } from "next/navigation";
 import Question from "@/database/models/question.model";
 import { FilterQuery } from "mongoose";
+import Answer from "@/database/models/answer.model";
 
 export default async function getTopUserTags(params: GetTopUserTags) {
   try {
@@ -15,6 +16,25 @@ export default async function getTopUserTags(params: GetTopUserTags) {
     const { userId, limit = 3 } = params;
 
     const user = await User.findById(userId);
+    const id = user._id.toString();
+
+    const answers = await Answer.find({ author: id }).populate({
+      path: "question",
+      model: Question,
+      options: {
+        populate: [
+          {
+            path: "tags",
+            model: Tag,
+            select: "name",
+          },
+        ],
+      },
+    });
+
+    const tags = await answers.map((answer) => answer.question.tags.map((tag: any) => tag.name)).flat();
+
+    tags.sort((a, b) => b.localeCompare(a));
 
     if (!user) throw new Error("Пользователь не найден.");
 
