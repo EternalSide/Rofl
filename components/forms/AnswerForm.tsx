@@ -44,8 +44,6 @@ const AnswerForm = ({ authorId, questionId }: any) => {
 
   const generateAiAnswer = async (): Promise<void> => {
     try {
-      // ! Закончился пробный пероид, api не работает.
-      console.log("Закончился пробный пероид, api не работает.");
       // const AI_RES = await axios.post("/api/ai", JSON.stringify(questionId));
       // await createAnswer({
       //   content: values.answer,
@@ -61,8 +59,10 @@ const AnswerForm = ({ authorId, questionId }: any) => {
 
   if (!authorId) {
     return (
-      <Link className="primary-text-gradient mt-4 text-center block" href="/sign-in">
-        Войдите, чтобы оставить комментарий
+      <Link className="mt-4 text-center block" href="/sign-in">
+        <Button className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900">
+          Войдите, чтобы оставить комментарий
+        </Button>
       </Link>
     );
   }
@@ -71,7 +71,7 @@ const AnswerForm = ({ authorId, questionId }: any) => {
       <div className="flex mt-8 justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
         <h4 className="paragraph-semibold text-dark400_light800">Добавьте комментарий</h4>
         <Button
-          onClick={() => generateAiAnswer()}
+          onClick={generateAiAnswer}
           className="shadow-none dark:text-primary-500 btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500"
         >
           <Image width={12} height={12} className="object-contain" alt="star" src="/assets/icons/stars.svg" />

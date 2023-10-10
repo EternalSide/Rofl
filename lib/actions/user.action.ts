@@ -13,7 +13,7 @@ import {
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
@@ -116,7 +116,20 @@ export async function getAllUsers(params: GetAllUsersParams) {
 
     const { page = 1, pageSize = 20, filter, searchQuery } = params;
 
-    const users = await User.find({}).sort({ createdAt: -1 });
+    const query: FilterQuery<typeof User> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        {
+          name: { $regex: new RegExp(searchQuery, "i") },
+        },
+        {
+          username: { $regex: new RegExp(searchQuery, "i") },
+        },
+      ];
+    }
+
+    const users = await User.find(query).sort({ createdAt: -1 });
 
     return { users };
   } catch (e) {
@@ -138,13 +151,19 @@ export async function ToggleSaveQuestion(params: ToggleSaveQuestionParams) {
 
     const isPostSaved = user.savedPosts.includes(questionId);
 
+    type actionType = "delete" | "add";
+    let action: actionType;
+
     if (isPostSaved) {
       await User.findByIdAndUpdate(userId, { $pull: { savedPosts: questionId } }, { new: true });
+      action = "delete";
     } else {
       await User.findByIdAndUpdate(userId, { $addToSet: { savedPosts: questionId } }, { new: true });
+      action = "add";
     }
 
     revalidatePath(path);
+    return action;
   } catch (e) {
     console.log(e);
     throw e;

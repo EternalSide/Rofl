@@ -17,6 +17,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import { redirect } from "next/navigation";
 import generateChappyAnswer from "@/lib/chappi";
 import { type } from "os";
+import { ITag } from "@/database/models/tag.model";
 
 interface QuestionPageProps {
   params: { questionId: string };
@@ -38,11 +39,13 @@ export async function generateMetadata(
 
 const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
   const { userId } = auth();
-  if (!userId) return null;
-
+  // if (!userId) return null;
+  let user;
   const question = await getQuestionById({ questionId: params.questionId });
 
-  const user = await getUserById({ userId });
+  if (userId) {
+    user = await getUserById({ userId });
+  }
 
   // ! Xардкод
   let chappyAlowed = true;
@@ -67,7 +70,7 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
             <Votes
               type="Question"
               questionId={question._id.toString()}
-              userId={user?._id.toString() || null}
+              userId={user?._id.toString() || undefined}
               upvotes={question.upvotes.length}
               downvotes={question.downvotes.length}
               hasUpVoted={question.upvotes.includes(user?._id)}
@@ -106,7 +109,7 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
 
       <ParseHTML data={question.content} />
       <div className="mt-8 flex flex-wrap gap-2">
-        {question.tags.map((tag: any) => (
+        {question.tags.map((tag: ITag) => (
           <RenderTag key={tag._id} _id={tag._id.toString()} showCount={false} name={tag.name} />
         ))}
       </div>

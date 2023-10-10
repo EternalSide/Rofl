@@ -3,17 +3,18 @@ import Filter from "@/components/shared/Filter";
 import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
 import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
-const UsersPage = async () => {
-  const { users } = await getAllUsers({});
+const UsersPage = async ({ searchParams }: SearchParamsProps) => {
+  const { users } = await getAllUsers({ searchQuery: searchParams.q });
 
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Все пользователи</h1>
       <div className="flex justify-between gap-5 mt-11 max-sm:flex-col sm:items-center">
         <LocalSearchbar
-          route="/community"
+          route="/users"
           placeholder="Найти Пользователя"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"

@@ -1,6 +1,6 @@
-import React from "react";
+import { ChildrenProps } from "@/types";
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex-center min-h-screen">{children}</div>;
+const AuthLayout = ({ children }: ChildrenProps) => {
+  return <div className="flex-center min-h-screen bg-auth-light dark:bg-auth-dark">{children}</div>;
 };
 export default AuthLayout;

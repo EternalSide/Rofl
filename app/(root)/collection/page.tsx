@@ -4,14 +4,15 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
 import { QuestionFilters } from "@/constants/filters";
 import { getSavedPosts } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-const SavedPostPage = async () => {
+const SavedPostPage = async ({ searchParams }: SearchParamsProps) => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
 
-  const { questions } = await getSavedPosts({ clerkId: userId });
+  const { questions } = await getSavedPosts({ clerkId: userId, searchQuery: searchParams.q });
 
   return (
     <>

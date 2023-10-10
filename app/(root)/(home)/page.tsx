@@ -8,9 +8,12 @@ import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import { getQuestions } from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
 
-export default async function MainPage() {
-  const results = await getQuestions({});
+export default async function MainPage({ searchParams }: SearchParamsProps) {
+  const results = await getQuestions({
+    searchQuery: searchParams.q,
+  });
 
   return (
     <>
@@ -55,8 +58,8 @@ export default async function MainPage() {
           ))
         ) : (
           <NoResult
-            title="Упс! Вопросов нету.."
-            description="Станьте первым, кто положит конец молчанию! 🚀Опубликуйте вопрос и начните обсуждение. Кто знает, может именно ваш вопрос поможет людям решить свою проблему.. Оставайтесь с нами! 💡"
+            title="Ничего не найдено..."
+            description="Станьте первым, кто опубликует вопрос на не найденную тему🚀"
             link="/ask-question"
             linkTitle="Новый Вопрос"
           />

@@ -3,25 +3,24 @@ import { Configuration, OpenAIApi } from "openai";
 import connectToDatabase from "./mongoose";
 import Answer from "@/database/models/answer.model";
 import Question from "@/database/models/question.model";
-import console from "console";
-
-let DISABLED_NOTIFICATIONS: boolean = false;
-
-interface ChappiProps {
-  questionText: string;
-  questionId: string;
-}
-
-// Чаппи отвечает на вопрос автоматически, только если пользователь имеет не больше 3 вопросов
-//  и только если чаппи запросов меньше 3;
-// Пока хардкод.
+import { ChappiProps } from "@/types";
+/* 
+   1.Чаппи добавляет ответ к вопросу автоматически после публикации.
+   2.Чаппи подключается к OpenAI
+   3.Чаппи лимит - 3 раза.
+   4. Лимит должен быть описан в схеме и добавляться после записи ответа.
+*/
 export default async function generateChappyAnswer(params: ChappiProps) {
+  // Выключить Уведомления о работе.
+  let DISABLED_NOTIFICATIONS: boolean = false;
+
   if (!process.env.OPENAI_API_KEY) console.log("Не добавлен ключ для OpenAI.");
   if (!DISABLED_NOTIFICATIONS) console.log("Чаппи в работе.");
 
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
+
   const openai = new OpenAIApi(configuration);
 
   if (!DISABLED_NOTIFICATIONS) console.log("OpenAI подключен.");
@@ -59,6 +58,6 @@ export default async function generateChappyAnswer(params: ChappiProps) {
 
     if (!DISABLED_NOTIFICATIONS) return console.log("Ответ добавлен, работа закончена.");
   } catch (e) {
-    console.log(e, "Чаппи сломался.");
+    console.log(e, "Чаппи сломался, что-то пошло не так.");
   }
 }

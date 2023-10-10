@@ -7,12 +7,13 @@ import { ToggleSaveQuestion } from "@/lib/actions/user.action";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "../ui/use-toast";
 
 interface VotesProps {
   type: string;
   questionId?: string;
   answerId?: string;
-  userId: string;
+  userId: string | undefined;
   upvotes: number;
   downvotes: number;
   hasUpVoted: boolean;
@@ -39,10 +40,17 @@ const Votes = ({
     viewQuestion({ questionId: questionId!, userId: userId ? userId : undefined });
   }, [questionId, answerId, path, userId]);
 
-  const handeSave = async (): Promise<void> => {
+  const handleSave = async (): Promise<void> => {
     if (!userId) return;
 
-    await ToggleSaveQuestion({ userId, questionId: questionId!, path });
+    const savedAction = await ToggleSaveQuestion({ userId, questionId: questionId!, path });
+
+    toast({
+      title: savedAction === "add" ? "Вопрос добавлен в Избранное ✅" : "Вопрос удален из Избранного ✅",
+      className: "bg-black text-white border-neutral-900",
+      duration: 2000,
+    });
+    return;
   };
 
   const handleVote = async (action: ActionVoteType): Promise<void> => {
@@ -108,7 +116,7 @@ const Votes = ({
 
       {type === "Question" && (
         <Image
-          onClick={() => handeSave()}
+          onClick={handleSave}
           className="cursor-pointer"
           width={18}
           height={18}

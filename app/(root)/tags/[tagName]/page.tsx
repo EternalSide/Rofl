@@ -13,7 +13,7 @@ const TagPage = async ({ params, searchParams }: TagPageProps) => {
       <h1 className="h1-bold text-dark100_light900 first-letter:uppercase">{tagName}</h1>
       <div className="mt-11 w-full">
         <LocalSearchbar
-          route="/"
+          route={`/tags/${tagName}`}
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder={`Найти вопрос по тегу "${tagName}"`}

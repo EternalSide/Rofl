@@ -19,15 +19,12 @@ export interface UserProps extends ParamsProps {
 const UserProfile = async ({ params, searchParams }: UserProps) => {
   const { userId: clerkId } = auth();
   const data = await getUserByUsername({ username: params.username });
+
   const isOwnProfile = clerkId && clerkId === data?.user.clerkId;
   const isAdmin = data?.user.username === "overflow";
 
   if (!data?.user) {
-    return (
-      <div>
-        <h1 className="h1-bold text-dark100_light900">Учетной записи не существует.</h1>
-      </div>
-    );
+    return <h1 className="h1-bold text-dark100_light900 text-center">Учетной записи не существует.</h1>;
   }
 
   return (

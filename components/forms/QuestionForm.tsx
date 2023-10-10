@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { useRouter, usePathname } from "next/navigation";
+import { ITag } from "@/database/models/tag.model";
 
 interface QuestionFormProps {
   mongoUserId: string;
@@ -28,7 +29,8 @@ const QuestionForm = ({ type, questionDetails, mongoUserId }: QuestionFormProps)
     parsedQuestionDetails = JSON.parse(questionDetails || "");
   }
 
-  const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
+  const groupedTags = parsedQuestionDetails?.tags.map((tag: ITag) => tag.name);
+
   const form = useForm<z.infer<typeof Questions_Schema>>({
     resolver: zodResolver(Questions_Schema),
     defaultValues: {
@@ -37,6 +39,7 @@ const QuestionForm = ({ type, questionDetails, mongoUserId }: QuestionFormProps)
       tags: groupedTags || [],
     },
   });
+
   const editorRef = useRef(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -64,7 +67,9 @@ const QuestionForm = ({ type, questionDetails, mongoUserId }: QuestionFormProps)
 
         router.push(`/question/${questionId}`);
       }
-    } catch (error) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: any) => {
@@ -73,13 +78,19 @@ const QuestionForm = ({ type, questionDetails, mongoUserId }: QuestionFormProps)
       // ! Выяснить, что за баг с добавлением больше чем 3 тегов,
       // ! И пофиксить его.
       const tagInput = e.target as HTMLInputElement;
-      const tagValue = tagInput.value.trim();
+      const tagValue = tagInput.value.trim().toLowerCase();
 
       if (tagValue !== "") {
-        if (tagValue.length > 15) {
+        if (tagValue.length > 15 || tagValue.length < 3) {
           return form.setError("tags", {
             type: "required",
-            message: "Тег не может быть больше 15 символов.",
+            message: "Тег не может быть меньше 3 и больше 15 символов.",
+          });
+        }
+        if (field.value.length === 3) {
+          return form.setError("tags", {
+            type: "required",
+            message: "Тегов не может быть больше 3.",
           });
         }
         // * Если Тега нету, то добавим его.

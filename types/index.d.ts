@@ -1,4 +1,9 @@
 import { BADGE_CRITERIA } from "@/constants";
+import React from "react";
+
+export interface ChildrenProps {
+  children: React.ReactNode;
+}
 
 export interface SidebarLink {
   imgURL: string;
@@ -46,3 +51,8 @@ export interface BadgeCounts {
 }
 
 export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;
+
+export interface ChappiProps {
+  questionText: string;
+  questionId: string;
+}

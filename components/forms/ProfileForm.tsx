@@ -26,7 +26,6 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
     resolver: zodResolver(UserSchema),
     defaultValues: {
       name: parsedUser.user.name || "",
-      // username: parsedUser.user.username || "",
       portfolio_link: parsedUser.user.portfolioWebsite || "",
       location: parsedUser.user.location || "",
       bio: parsedUser.user.bio || "",
@@ -34,7 +33,7 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
   });
   const router = useRouter();
   const pathname = usePathname();
-  const { isSubmitting } = form.formState;
+  const { isSubmitting, isDirty } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof UserSchema>) => {
     try {
@@ -42,7 +41,6 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
         clerkId,
         updatedData: {
           name: values.name,
-          // username: values.username,
           portfolioWebsite: values.portfolio_link,
           location: values.location,
           bio: values.bio,
@@ -76,25 +74,6 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
             </FormItem>
           )}
         />
-        {/* <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem className="space-y-2.5">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
-                Имя пользователя<span className="text-primary-500">*</span>
-              </FormLabel>
-              <FormControl className="mt-3.5">
-                <Input
-                  className="no-focus paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage className="text-red-500" />
-            </FormItem>
-          )}
-        /> */}
         <FormField
           control={form.control}
           name="portfolio_link"
@@ -151,7 +130,11 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
           )}
         />
         <div className="mt-7 flex justify-end">
-          <Button type="submit" disabled={isSubmitting} className="-mt-5 primary-gradient !text-light-900 w-fit">
+          <Button
+            type="submit"
+            disabled={isSubmitting || !isDirty}
+            className={`-mt-5 primary-gradient !text-light-900 w-fit`}
+          >
             {isSubmitting ? "Сохранение.." : "Сохранить"}
           </Button>
         </div>

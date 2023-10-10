@@ -29,7 +29,7 @@ const NoResult = ({ title, description, link, linkTitle }: Props) => {
       <h2 className="h2-bold text-dark200_light900 mt-8">{title}</h2>
       <p className="body-regular text-dark500_light700 my-3.5 max-w-md text-center">{description}</p>
       <Link href={link}>
-        <Button className="primary-gradient paragraph-medium mt-5 !text-light-900">{linkTitle}</Button>
+        <Button className="primary-gradient paragraph-medium mt-1 !text-light-900">{linkTitle}</Button>
       </Link>
     </div>
   );
