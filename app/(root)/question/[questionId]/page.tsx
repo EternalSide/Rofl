@@ -16,7 +16,6 @@ import Link from "next/link";
 import { Metadata, ResolvingMetadata } from "next";
 import { redirect } from "next/navigation";
 import generateChappyAnswer from "@/lib/chappi";
-import { type } from "os";
 import { ITag } from "@/database/models/tag.model";
 
 interface QuestionPageProps {
@@ -118,6 +117,8 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
         totalAnswers={question.anwsers.length}
         questionId={question._id.toString()}
         userId={user?._id.toString()}
+        filter={searchParams?.filter}
+        page={searchParams?.page}
       />
 
       <AnswerForm authorId={user?._id.toString()} questionId={params.questionId} />

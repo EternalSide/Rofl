@@ -13,7 +13,7 @@ import {
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
-import { FilterQuery, FilterQuery } from "mongoose";
+import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
@@ -129,7 +129,26 @@ export async function getAllUsers(params: GetAllUsersParams) {
       ];
     }
 
-    const users = await User.find(query).sort({ createdAt: -1 });
+    let sortOptions = {};
+
+    switch (filter) {
+      case "new_users":
+        sortOptions = { joinedAt: -1 };
+        break;
+
+      case "old_users":
+        sortOptions = { joinedAt: 1 };
+        break;
+
+      case "top_contributors":
+        sortOptions = { reputation: -1 };
+        break;
+
+      default:
+        break;
+    }
+
+    const users = await User.find(query).sort(sortOptions);
 
     return { users };
   } catch (e) {
@@ -178,13 +197,38 @@ export async function getSavedPosts(params: GetSavedPostsParams) {
 
     const query: FilterQuery<typeof Question> = searchQuery ? { title: { $regex: new RegExp(searchQuery, "i") } } : {};
 
+    let sortOptions = {};
+
+    switch (filter) {
+      case "most_recent":
+        sortOptions = { createdAt: -1 };
+        break;
+
+      case "oldest":
+        sortOptions = { createdAt: 1 };
+        break;
+
+      case "most_voted":
+        sortOptions = { upvotes: -1 };
+        break;
+
+      case "most_viewed":
+        sortOptions = { views: -1 };
+        break;
+
+      case "most_answered":
+        sortOptions = { answers: -1 };
+        break;
+
+      default:
+        break;
+    }
+
     const user = await User.findOne({ clerkId }).populate({
       path: "savedPosts",
       match: query,
       options: {
-        sort: {
-          createdAt: -1,
-        },
+        sort: sortOptions,
         populate: [
           { path: "tags", model: Tag, select: "_id name" },
           { path: "author", model: User, select: "_id name picture clerkId username" },

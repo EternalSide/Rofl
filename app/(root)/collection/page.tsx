@@ -12,7 +12,11 @@ const SavedPostPage = async ({ searchParams }: SearchParamsProps) => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
 
-  const { questions } = await getSavedPosts({ clerkId: userId, searchQuery: searchParams.q });
+  const { questions } = await getSavedPosts({
+    clerkId: userId,
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+  });
 
   return (
     <>

@@ -12,11 +12,11 @@ interface AllAnswersProps {
   userId: string;
   totalAnswers: number;
   page?: number;
-  filter?: number;
+  filter?: string;
 }
 
 const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: AllAnswersProps) => {
-  const result = await getAnswers({ questionId: questionId });
+  const result = await getAnswers({ questionId: questionId, page: page ? +page : 1, sortBy: filter });
 
   return (
     <div className="mt-11">

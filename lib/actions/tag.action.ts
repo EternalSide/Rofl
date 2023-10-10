@@ -71,7 +71,30 @@ export async function getAllTags(params: GetAllTagsParams) {
       query.$or = [{ name: { $regex: new RegExp(searchQuery, "i") } }];
     }
 
-    const tags = await Tag.find(query).sort({ createdAt: -1 });
+    let sortOptions = {};
+
+    switch (filter) {
+      case "recent":
+        sortOptions = { createdOn: -1 };
+        break;
+
+      case "popular":
+        sortOptions = { questions: -1 };
+        break;
+
+      case "name":
+        sortOptions = { name: 1 };
+        break;
+
+      case "old":
+        sortOptions = { createdOn: 1 };
+        break;
+
+      default:
+        break;
+    }
+
+    const tags = await Tag.find(query).sort(sortOptions);
 
     return { tags };
   } catch (e) {
@@ -120,7 +143,6 @@ export async function getTagQuestion(params: GetQuestionsByTagIdParams) {
   }
 }
 
-// * Теперь работает :D
 export async function getPopularTags() {
   try {
     connectToDatabase();
