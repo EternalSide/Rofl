@@ -25,10 +25,10 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
-      name: parsedUser.user.name || "",
-      portfolio_link: parsedUser.user.portfolioWebsite || "",
-      location: parsedUser.user.location || "",
-      bio: parsedUser.user.bio || "",
+      name: parsedUser.user?.name || "",
+      portfolio_link: parsedUser.user?.portfolioWebsite || "",
+      location: parsedUser.user?.location || "",
+      bio: parsedUser.user?.bio || "",
     },
   });
   const router = useRouter();
