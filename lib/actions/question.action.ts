@@ -67,7 +67,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery, filter, page = 1, pageSize = 30 } = params;
+    const { searchQuery, filter, page = 1, pageSize = 10 } = params;
 
     const skipAmount = (page - 1) * pageSize;
 
@@ -98,12 +98,6 @@ export async function getQuestions(params: GetQuestionsParams) {
 
       default:
         break;
-    }
-
-    if (filter) {
-      if (filter === "unanswered") {
-        sortOptions = { "anwsers.length": 0 };
-      }
     }
 
     const questions = await Question.find(query)

@@ -1,12 +1,17 @@
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
 import { getTagQuestion } from "@/lib/actions/tag.action";
 import { TagPageProps } from "@/types";
 
 const TagPage = async ({ params, searchParams }: TagPageProps) => {
   const tagName = params.tagName;
-  const { tagQuestions } = await getTagQuestion({ tagName, page: 1, searchQuery: searchParams.q });
+  const { tagQuestions, isNext } = await getTagQuestion({
+    tagName,
+    page: searchParams?.page ? +searchParams.page : 1,
+    searchQuery: searchParams.q,
+  });
 
   return (
     <>
@@ -44,6 +49,9 @@ const TagPage = async ({ params, searchParams }: TagPageProps) => {
             linkTitle="Новый Вопрос"
           />
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination isNext={isNext} pageNumber={searchParams?.page ? +searchParams?.page : 1} />
       </div>
     </>
   );

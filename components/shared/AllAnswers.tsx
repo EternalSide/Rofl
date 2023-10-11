@@ -6,6 +6,7 @@ import UserAvatar from "./UserAvatar";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
+import Pagination from "./Pagination";
 
 interface AllAnswersProps {
   questionId: string;
@@ -57,6 +58,9 @@ const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: Al
             <ParseHTML data={answer.content} />
           </article>
         ))}
+      </div>
+      <div className="mt-10 w-full">
+        <Pagination isNext={result.isNext} pageNumber={page ? +page : 1} />
       </div>
     </div>
   );

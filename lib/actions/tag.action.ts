@@ -32,7 +32,7 @@ export default async function getTopUserTags(params: GetTopUserTags) {
       },
     });
 
-    const tags = await answers.map((answer) => answer.question.tags.map((tag: any) => tag.name)).flat();
+    const tags = await answers.map((answer) => answer.question?.tags?.map((tag: any) => tag.name)).flat();
 
     tags.sort((a, b) => b.localeCompare(a));
 
@@ -93,10 +93,14 @@ export async function getAllTags(params: GetAllTagsParams) {
       default:
         break;
     }
+    const skipAmount = (page - 1) * pageSize;
 
-    const tags = await Tag.find(query).sort(sortOptions);
+    const tags = await Tag.find(query).sort(sortOptions).skip(skipAmount).limit(pageSize);
+    const totalTags = await Tag.countDocuments(query);
 
-    return { tags };
+    const isNext = totalTags > skipAmount + tags.length;
+
+    return { tags, isNext };
   } catch (e) {
     console.log(e);
     throw e;
@@ -107,7 +111,9 @@ export async function getTagQuestion(params: GetQuestionsByTagIdParams) {
   try {
     connectToDatabase();
 
-    const { page = 1, pageSize = 20, tagName, searchQuery } = params;
+    const { page = 1, pageSize = 5, tagName, searchQuery } = params;
+
+    const skipAmount = (page - 1) * pageSize;
 
     const tagFilter: FilterQuery<ITag> = { name: tagName };
 
@@ -119,6 +125,8 @@ export async function getTagQuestion(params: GetQuestionsByTagIdParams) {
         sort: {
           createdAt: -1,
         },
+        skip: skipAmount,
+        limit: pageSize + 1,
         populate: [
           {
             path: "tags",
@@ -135,8 +143,10 @@ export async function getTagQuestion(params: GetQuestionsByTagIdParams) {
 
     if (!tag) redirect("/tags");
 
+    const isNext = tag.questions.length > pageSize;
+
     const tagQuestions = tag.questions;
-    return { tagQuestions };
+    return { tagQuestions, isNext };
   } catch (e) {
     console.log(e);
     throw e;

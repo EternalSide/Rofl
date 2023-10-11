@@ -1,6 +1,7 @@
 import QuestionCard from "@/components/cards/QuestionCard";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
 import { QuestionFilters } from "@/constants/filters";
 import { getSavedPosts } from "@/lib/actions/user.action";
@@ -12,10 +13,11 @@ const SavedPostPage = async ({ searchParams }: SearchParamsProps) => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
 
-  const { questions } = await getSavedPosts({
+  const { questions, isNext } = await getSavedPosts({
     clerkId: userId,
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: searchParams?.page ? +searchParams.page : 1,
   });
 
   return (
@@ -51,6 +53,9 @@ const SavedPostPage = async ({ searchParams }: SearchParamsProps) => {
         ) : (
           <NoResult title="Ничего не найдено.." description="" link="/" linkTitle="На Главную" />
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination isNext={isNext} pageNumber={searchParams?.page ? +searchParams?.page : 1} />
       </div>
     </>
   );
