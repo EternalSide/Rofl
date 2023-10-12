@@ -60,7 +60,7 @@ const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: Al
         ))}
       </div>
       <div className="mt-10 w-full">
-        <Pagination isNext={result.isNext} pageNumber={page ? +page : 1} />
+        <Pagination isNext={result?.isNext!} pageNumber={page ? +page : 1} />
       </div>
     </div>
   );
