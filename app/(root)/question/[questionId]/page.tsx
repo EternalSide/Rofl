@@ -117,7 +117,7 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
         page={searchParams?.page}
       />
 
-      <AnswerForm authorId={user?._id.toString()} questionId={params.questionId} />
+      <AnswerForm authorId={user?._id.toString()} questionId={params.questionId} question={question.content} />
     </>
   );
 };

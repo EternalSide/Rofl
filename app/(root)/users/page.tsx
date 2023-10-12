@@ -7,6 +7,7 @@ import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import { Metadata } from "next";
 import Link from "next/link";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: "Пользователи / RuOverflow",

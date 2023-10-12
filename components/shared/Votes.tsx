@@ -49,6 +49,7 @@ const Votes = ({
       title: savedAction === "add" ? "Вопрос добавлен в Избранное ✅" : "Вопрос удален из Избранного ✅",
       className: "bg-black text-white border-neutral-900",
       duration: 2000,
+      variant: !hasSaved ? "default" : "destructive",
     });
     return;
   };
@@ -58,9 +59,14 @@ const Votes = ({
     isLiked: hasUpVoted,
   });
 
-  const handleVote = async (action: ActionVoteType): Promise<void> => {
-    if (!userId) return;
-
+  const handleVote = async (action: ActionVoteType) => {
+    if (!userId) {
+      return toast({
+        title: "Войдите, чтобы оценить вопрос",
+        className: "bg-black text-white border-neutral-900",
+        duration: 2000,
+      });
+    }
     try {
       if (action === "UpVote") {
         if (type === "Question") {
@@ -69,8 +75,12 @@ const Votes = ({
           await createUpVoteAnswer({ userId, answerId: answerId!, path, hasDownVoted, hasUpVoted });
         }
 
-        // TODO: toaster
-        return;
+        return toast({
+          title: `Лайк ${!hasUpVoted ? "Добавлен" : "удален"}`,
+          className: "bg-black text-white border-neutral-900",
+          variant: !hasUpVoted ? "default" : "destructive",
+          duration: 2000,
+        });
       }
 
       if (action === "DownVote") {
@@ -79,8 +89,13 @@ const Votes = ({
         } else if (type === "Answer") {
           await createDownVoteAnswer({ userId, answerId: answerId!, path, hasDownVoted, hasUpVoted });
         }
-        // TODO: toaster
-        return;
+
+        return toast({
+          title: `Оценка ${!hasDownVoted ? "Добавлена" : "удалена"}`,
+          className: "bg-black text-white border-neutral-900",
+          variant: !hasDownVoted ? "default" : "destructive",
+          duration: 2000,
+        });
       }
     } catch (e) {
       console.log(e);

@@ -11,6 +11,7 @@ import Link from "next/link";
 import { getQuestions } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import { Metadata } from "next";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: "Главная / RuOverflow",
@@ -22,6 +23,9 @@ export default async function MainPage({ searchParams }: SearchParamsProps) {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
+  const isLoading = false;
+
+  if (isLoading) return <Loading />;
 
   return (
     <>

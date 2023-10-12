@@ -7,7 +7,6 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 import { cn } from "@/lib/utils";
 import { ruRU } from "@clerk/localizations";
 import { ChildrenProps } from "@/types";
-import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,7 +43,6 @@ export default function MainLayout({ children }: ChildrenProps) {
         >
           <ThemeProvider>{children}</ThemeProvider>
         </ClerkProvider>
-        <Toaster />
       </body>
     </html>
   );

@@ -1,7 +1,8 @@
 import Navbar from "@/components/shared/Navbar/Navbar";
 import LeftSidebar from "@/components/shared/Sidebar/LeftSidebar";
 import RightSidebar from "@/components/shared/Sidebar/RightSidebar";
-import { sendSomeFakeData } from "@/lib/actions/test.action";
+import { Toaster } from "@/components/ui/toaster";
+// import { sendSomeFakeData } from "@/lib/actions/sendFakeData.action";
 import React from "react";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -16,6 +17,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
         </section>
         <RightSidebar />
       </div>
+      <Toaster />
     </main>
   );
 };

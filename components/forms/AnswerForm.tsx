@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { useTheme } from "@/context/ThemeProvider";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { AnswerSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,7 @@ import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const AnswerForm = ({ authorId, questionId }: any) => {
+const AnswerForm = ({ authorId, questionId, question }: any) => {
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
     defaultValues: {
@@ -27,6 +27,8 @@ const AnswerForm = ({ authorId, questionId }: any) => {
   const editorRef = useRef(null);
   const { mode } = useTheme();
   const { isSubmitting } = form.formState;
+
+  const [isAiSubmitting, setIsAiSubmitting] = useState(false);
 
   const onSubmit = async (values: z.infer<typeof AnswerSchema>) => {
     try {
@@ -43,8 +45,17 @@ const AnswerForm = ({ authorId, questionId }: any) => {
   };
 
   const generateAiAnswer = async (): Promise<void> => {
+    if (!authorId) return;
+    setIsAiSubmitting(true);
     try {
-      // const AI_RES = await axios.post("/api/ai", JSON.stringify(questionId));
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`, {
+        method: "POST",
+        body: JSON.stringify({ question }),
+      });
+
+      const answer = await res.json();
+      alert(answer.reply);
+
       // await createAnswer({
       //   content: values.answer,
       //   author: authorId,
@@ -54,6 +65,8 @@ const AnswerForm = ({ authorId, questionId }: any) => {
       // form.resetField("answer");
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsAiSubmitting(false);
     }
   };
 
