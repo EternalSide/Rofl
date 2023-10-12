@@ -48,6 +48,43 @@ export const globalSearch = async (params: SearchParams) => {
 
     const typeLower = type?.toLowerCase();
 
+    const generateId = (fieldName: string, item: any) => {
+      switch (fieldName) {
+        case "user":
+          return item.username;
+
+        case "answer":
+          return item.question;
+
+        case "question":
+          return item._id;
+
+        case "tag":
+          return item.name;
+
+        default:
+          return null;
+      }
+    };
+
+    const generateType = (fieldName: string, item: any) => {
+      switch (fieldName) {
+        case "user":
+          return "Пользователь";
+
+        case "answer":
+          return "Комментарий";
+
+        case "question":
+          return "Вопрос";
+
+        case "tag":
+          return "Тег";
+
+        default:
+          return "";
+      }
+    };
     if (!typeLower || !SearchableTypes.includes(typeLower)) {
       // поиск без фильтров.
 
@@ -58,7 +95,8 @@ export const globalSearch = async (params: SearchParams) => {
           ...queryResults.map((item) => ({
             title: type === "answer" ? `Answers containing ${query}` : item[searchField],
             type,
-            id: type === "user" ? item.clerkId : type === "answer" ? item.question : item._id,
+            rutype: generateType(type!, item),
+            id: generateId(type, item),
           })),
         );
       }
@@ -75,7 +113,8 @@ export const globalSearch = async (params: SearchParams) => {
       results = queryResults.map((item) => ({
         title: type === "answer" ? `Найденный комментарий: ${query}` : item[modelInfo.searchField],
         type,
-        id: type === "user" ? item.clerkId : type === "answer" ? item.question : item._id,
+        rutype: generateType(type!, item),
+        id: generateId(type!, item),
       }));
     }
 
