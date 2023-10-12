@@ -4,6 +4,9 @@ import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
+export const metadata: Metadata = {
+  title: "Редактировать / RuOverflow",
+};
 const EditQuestionPage = async ({ params }: { params: { questionId: string } }) => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");

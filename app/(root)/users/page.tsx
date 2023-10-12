@@ -5,8 +5,12 @@ import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
 import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
+import { Metadata } from "next";
 import Link from "next/link";
 
+export const metadata: Metadata = {
+  title: "Пользователи / RuOverflow",
+};
 const UsersPage = async ({ searchParams }: SearchParamsProps) => {
   const { users, isNext } = await getAllUsers({
     searchQuery: searchParams.q,

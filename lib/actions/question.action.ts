@@ -56,6 +56,17 @@ export async function createQuestion(params: CreateQuestionParams) {
       $push: { tags: { $each: tagDocuments } },
     });
 
+    await Interaction.create({
+      user: author,
+      question: newQuestion._id,
+      action: "ask_question",
+      tags: tagDocuments,
+    });
+
+    await User.findByIdAndUpdate(author, {
+      $inc: { reputation: 5 },
+    });
+
     revalidatePath(path);
     return id;
   } catch (e) {
@@ -159,6 +170,10 @@ export async function createUpVote(params: QuestionVoteParams) {
       throw new Error("Вопрос не найден.");
     }
 
+    await User.findByIdAndUpdate(userId, { $inc: { reputation: hasUpVoted ? -1 : 1 } });
+
+    await User.findByIdAndUpdate(question.author, { $inc: { reputation: hasUpVoted ? -10 : 10 } });
+
     revalidatePath(path);
   } catch (e) {
     console.log(e);
@@ -189,6 +204,14 @@ export async function createDownVote(params: QuestionVoteParams) {
     if (!question) {
       throw new Error("Вопрос не найден.");
     }
+
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: (!hasDownVoted && !hasUpVoted) || hasUpVoted ? -1 : 1 },
+    });
+
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: (!hasDownVoted && !hasUpVoted) || hasUpVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (e) {

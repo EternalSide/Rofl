@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import connectToDatabase from "../mongoose";
 import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.types";
 import Interaction from "@/database/models/interaction.model";
+import User from "@/database/models/user.model";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -19,7 +20,19 @@ export async function createAnswer(params: CreateAnswerParams) {
       author,
     });
 
-    await Question.findByIdAndUpdate(question, { $push: { anwsers: newAnswer._id } });
+    const questionObject = await Question.findByIdAndUpdate(question, { $push: { anwsers: newAnswer._id } });
+
+    await Interaction.create({
+      user: author,
+      action: "answer",
+      question,
+      answer: newAnswer._id,
+      tags: questionObject.tags,
+    });
+
+    await User.findByIdAndUpdate(author, {
+      $inc: { reputation: 10 },
+    });
 
     revalidatePath(path);
   } catch (e) {
@@ -97,6 +110,14 @@ export async function createUpVoteAnswer(params: AnswerVoteParams) {
       throw new Error("Комментарий не найден.");
     }
 
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasUpVoted ? -2 : 2 },
+    });
+
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasUpVoted ? -10 : +10 },
+    });
+
     revalidatePath(path);
   } catch (e) {
     console.log(e);
@@ -127,6 +148,14 @@ export async function createDownVoteAnswer(params: AnswerVoteParams) {
     if (!answer) {
       throw new Error("Комментарий не найден.");
     }
+
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasDownVoted ? -2 : 2 },
+    });
+
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasDownVoted ? -10 : +10 },
+    });
 
     revalidatePath(path);
   } catch (e) {

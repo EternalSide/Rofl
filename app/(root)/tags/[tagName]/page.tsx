@@ -4,6 +4,15 @@ import Pagination from "@/components/shared/Pagination";
 import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
 import { getTagQuestion } from "@/lib/actions/tag.action";
 import { TagPageProps } from "@/types";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const tagName = params.tagName;
+
+  return {
+    title: `Тег: ${tagName[0].toUpperCase() + tagName.slice(1)} / RuOverFlow`,
+  };
+}
 
 const TagPage = async ({ params, searchParams }: TagPageProps) => {
   const tagName = params.tagName;

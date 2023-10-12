@@ -10,6 +10,11 @@ import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import { getQuestions } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Главная / RuOverflow",
+};
 
 export default async function MainPage({ searchParams }: SearchParamsProps) {
   const results = await getQuestions({

@@ -3,6 +3,11 @@ import { auth } from "@clerk/nextjs";
 import { getUserByUsername } from "@/lib/actions/user.action";
 import { UserProps } from "../page";
 import ProfileForm from "@/components/forms/ProfileForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Редактировать Профиль / RuOverflow",
+};
 
 const EditProfilePage = async ({ params, searchParams }: UserProps) => {
   const { userId } = auth();

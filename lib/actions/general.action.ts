@@ -67,7 +67,7 @@ export const globalSearch = async (params: SearchParams) => {
       }
     };
 
-    const generateType = (fieldName: string, item: any) => {
+    const generateRuName = (fieldName: string, item: any) => {
       switch (fieldName) {
         case "user":
           return "Пользователь";
@@ -85,27 +85,29 @@ export const globalSearch = async (params: SearchParams) => {
           return "";
       }
     };
-    if (!typeLower || !SearchableTypes.includes(typeLower)) {
-      // поиск без фильтров.
 
+    if (!typeLower || !SearchableTypes.includes(typeLower)) {
+      // - Без фильтров.
+      // Поиск по всем моделям.
       for (const { model, searchField, type } of modelsAndTypes) {
         const queryResults = await model.find({ [searchField]: regexQuery }).limit(2);
 
         results.push(
           ...queryResults.map((item) => ({
-            title: type === "answer" ? `Answers containing ${query}` : item[searchField],
+            title: type === "answer" ? `Найденный комментарий: ${query}` : item[searchField],
             type,
-            rutype: generateType(type!, item),
+            ruName: generateRuName(type!, item),
             id: generateId(type, item),
           })),
         );
       }
     } else {
-      // Общий поиск по фильтрам.
+      // - Если выбран фильтр и модель.
+      // Поиск по одной модели.
       const modelInfo = modelsAndTypes.find((item) => item.type === type);
 
       if (!modelInfo) {
-        throw new Error("Invalid search Type");
+        throw new Error("Модель не совпадает.");
       }
 
       const queryResults = await modelInfo.model.find({ [modelInfo.searchField]: regexQuery }).limit(8);
@@ -113,7 +115,7 @@ export const globalSearch = async (params: SearchParams) => {
       results = queryResults.map((item) => ({
         title: type === "answer" ? `Найденный комментарий: ${query}` : item[modelInfo.searchField],
         type,
-        rutype: generateType(type!, item),
+        ruName: generateRuName(type!, item),
         id: generateId(type!, item),
       }));
     }

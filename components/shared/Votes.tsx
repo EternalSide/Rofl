@@ -6,7 +6,7 @@ import { ToggleSaveQuestion } from "@/lib/actions/user.action";
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
 
 interface VotesProps {
@@ -52,6 +52,11 @@ const Votes = ({
     });
     return;
   };
+
+  const [fakeVote, setFakeVote] = useState({
+    number: upvotes,
+    isLiked: hasUpVoted,
+  });
 
   const handleVote = async (action: ActionVoteType): Promise<void> => {
     if (!userId) return;

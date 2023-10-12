@@ -11,9 +11,23 @@ import { BadgeCheck } from "lucide-react";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
 import { ParamsProps } from "@/types";
+import { Metadata } from "next";
 
 export interface UserProps extends ParamsProps {
   searchParams: any;
+}
+
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const data = await getUserByUsername({ username: params.username });
+
+  if (!data)
+    return {
+      title: `Пользователь не найден / RuOverFlow`,
+    };
+
+  return {
+    title: `${data?.user.name} (@${data?.user.username}) / RuOverFlow`,
+  };
 }
 
 const UserProfile = async ({ params, searchParams }: UserProps) => {

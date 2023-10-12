@@ -87,7 +87,7 @@ const GlobalResult = () => {
                   />
                   <div className="flex flex-col">
                     <p className="body-medium text-dark200_light800 line-clamp-1">{item.title}</p>
-                    <p className="text-light400_light500 mt-1 font-bold small-medium capitalize">{item.rutype}</p>
+                    <p className="text-light400_light500 mt-1 font-bold small-medium capitalize">{item.ruName}</p>
                   </div>
                 </Link>
               ))

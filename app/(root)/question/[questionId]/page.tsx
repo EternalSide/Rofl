@@ -25,14 +25,11 @@ interface QuestionPageProps {
 
 // ! Смена заголовка
 
-export async function generateMetadata(
-  { params, searchParams }: QuestionPageProps,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: QuestionPageProps): Promise<Metadata> {
   const question = await getQuestionById({ questionId: params.questionId });
 
   return {
-    title: `OverFlow | ${question.title}`,
+    title: `${question.title} / RuOverFlow`,
   };
 }
 

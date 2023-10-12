@@ -1,8 +1,12 @@
 import QuestionForm from "@/components/forms/QuestionForm";
 import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
+export const metadata: Metadata = {
+  title: "Новый Вопрос / RuOverflow",
+};
 const AskQuestionPage = async () => {
   const { userId } = auth();
 
