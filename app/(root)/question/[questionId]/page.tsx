@@ -24,7 +24,6 @@ interface QuestionPageProps {
 }
 
 // ! Смена заголовка
-
 export async function generateMetadata({ params }: QuestionPageProps): Promise<Metadata> {
   const question = await getQuestionById({ questionId: params.questionId });
 
