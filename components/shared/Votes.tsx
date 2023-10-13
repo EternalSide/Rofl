@@ -47,7 +47,6 @@ const Votes = ({
 
     toast({
       title: savedAction === "add" ? "Вопрос добавлен в Избранное ✅" : "Вопрос удален из Избранного ✅",
-      className: "bg-black text-white border-neutral-900",
       duration: 2000,
       variant: !hasSaved ? "default" : "destructive",
     });
@@ -63,7 +62,6 @@ const Votes = ({
     if (!userId) {
       return toast({
         title: "Войдите, чтобы оценить вопрос",
-        className: "bg-black text-white border-neutral-900",
         duration: 2000,
       });
     }
@@ -77,7 +75,6 @@ const Votes = ({
 
         return toast({
           title: `Лайк ${!hasUpVoted ? "Добавлен" : "удален"}`,
-          className: "bg-black text-white border-neutral-900",
           variant: !hasUpVoted ? "default" : "destructive",
           duration: 2000,
         });
@@ -92,7 +89,6 @@ const Votes = ({
 
         return toast({
           title: `Оценка ${!hasDownVoted ? "Добавлена" : "удалена"}`,
-          className: "bg-black text-white border-neutral-900",
           variant: !hasDownVoted ? "default" : "destructive",
           duration: 2000,
         });

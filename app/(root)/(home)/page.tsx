@@ -5,24 +5,44 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import LocalSearchbar from "@/components/shared/Search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import Pagination from "@/components/shared/Pagination";
-
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
-import { getQuestions } from "@/lib/actions/question.action";
+import { getQuestions, getRecommendedQuestions } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import { Metadata } from "next";
 import Loading from "./loading";
+import { auth } from "@clerk/nextjs";
+import { toast } from "@/components/ui/use-toast";
 
 export const metadata: Metadata = {
   title: "Главная / RuOverflow",
 };
 
 export default async function MainPage({ searchParams }: SearchParamsProps) {
-  const results = await getQuestions({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1,
-  });
+  let results;
+
+  const { userId } = auth();
+
+  if (searchParams?.filter === "recommended") {
+    if (userId) {
+      results = await getRecommendedQuestions({
+        searchQuery: searchParams?.q!,
+        userId,
+        page: searchParams.page ? +searchParams.page : 1,
+      });
+    } else {
+      results = {
+        questions: [],
+        isNext: false,
+      };
+    }
+  } else {
+    results = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams?.filter!,
+      page: searchParams.page ? +searchParams.page : 1,
+    });
+  }
   const isLoading = false;
 
   if (isLoading) return <Loading />;

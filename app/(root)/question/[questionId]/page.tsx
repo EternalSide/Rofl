@@ -5,13 +5,10 @@ import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
 import UserAvatar from "@/components/shared/UserAvatar";
 import Votes from "@/components/shared/Votes";
-
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
-
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
-
 import Link from "next/link";
 import { Metadata } from "next";
 import { ITag } from "@/database/models/tag.model";
@@ -21,7 +18,6 @@ interface QuestionPageProps {
   searchParams: any;
 }
 
-// ! Смена заголовка
 export async function generateMetadata({ params }: QuestionPageProps): Promise<Metadata> {
   const question = await getQuestionById({ questionId: params.questionId });
 

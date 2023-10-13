@@ -66,7 +66,7 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
               </FormLabel>
               <FormControl className="mt-3.5">
                 <Input
-                  className="no-focus paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field}
                 />
               </FormControl>
@@ -84,7 +84,7 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
                 <Input
                   type="url"
                   placeholder="https://ruoverflow.ru/"
-                  className="no-focus paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field}
                 />
               </FormControl>
@@ -102,7 +102,7 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
               <FormControl className="mt-3.5">
                 <Input
                   placeholder="Санкт-Петербург, Россия"
-                  className="no-focus paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field}
                 />
               </FormControl>
@@ -120,7 +120,7 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
               <FormControl className="mt-3.5">
                 <Textarea
                   placeholder="FrontEnd developer"
-                  className="pt-3 no-focus paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 min-h-[76px] border"
+                  className="pt-3 no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[76px] border"
                   {...field}
                 />
               </FormControl>

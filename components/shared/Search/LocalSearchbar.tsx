@@ -46,7 +46,7 @@ const LocalSearchbar = ({ route, iconPosition, imgSrc, placeholder, otherClasses
 
   return (
     <div
-      className={`background-light800_darkgradient relative flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
+      className={`background-light800_darkgradient  relative flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
     >
       {iconPosition === "left" && (
         <Image alt="Search Icon" width={24} height={24} src={imgSrc} className="cursor-pointer" />

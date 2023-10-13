@@ -38,10 +38,14 @@ const Filter = ({ filters, otherClasses, containerClasses }: Props) => {
             <SelectValue placeholder="Сортировать По" />
           </div>
         </SelectTrigger>
-        <SelectContent className="!background-light800_dark300 text-dark500_light700 border light-border">
+        <SelectContent className="!background-light800_dark300 text-dark500_light700 small-regular border light-border">
           <SelectGroup>
             {filters.map((item) => (
-              <SelectItem className="hover:opacity-90 transition cursor-pointer" key={item.value} value={item.value}>
+              <SelectItem
+                className="focus:bg-light-700 dark:focus:bg-dark-400 transition cursor-pointer"
+                key={item.value}
+                value={item.value}
+              >
                 {item.name}
               </SelectItem>
             ))}

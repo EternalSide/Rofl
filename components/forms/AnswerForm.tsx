@@ -54,15 +54,13 @@ const AnswerForm = ({ authorId, questionId, question }: any) => {
       });
 
       const answer = await res.json();
-      alert(answer.reply);
 
-      // await createAnswer({
-      //   content: values.answer,
-      //   author: authorId,
-      //   path: pathname,
-      //   question: questionId,
-      // });
-      // form.resetField("answer");
+      const formatedAnswer = answer.reply.replace(/\n/g, "<br/>");
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent(formatedAnswer);
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -84,11 +82,27 @@ const AnswerForm = ({ authorId, questionId, question }: any) => {
       <div className="flex mt-8 justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
         <h4 className="paragraph-semibold text-dark400_light800">Добавьте комментарий</h4>
         <Button
+          disabled={isAiSubmitting}
           onClick={generateAiAnswer}
           className="shadow-none dark:text-primary-500 btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500"
         >
-          <Image width={12} height={12} className="object-contain" alt="star" src="/assets/icons/stars.svg" />
-          Добавить ответ ChatGPT
+          {isAiSubmitting ? (
+            <>
+              <Image
+                width={12}
+                height={12}
+                className="object-contain animate-bounce"
+                alt="star"
+                src="/assets/icons/stars.svg"
+              />
+              Генерирую ответ..
+            </>
+          ) : (
+            <>
+              <Image width={12} height={12} className="object-contain" alt="star" src="/assets/icons/stars.svg" />
+              Добавить ответ ChatGPT
+            </>
+          )}
         </Button>
       </div>
       <Form {...form}>
