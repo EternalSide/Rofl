@@ -31,12 +31,9 @@ export async function createQuestion(params: CreateQuestionParams) {
       content,
       author,
     });
-    // * Массив тегов на добавление к посту.
+
     const tagDocuments = [];
 
-    // * Теги поста, если есть, то тогда добавление поста, который с ним связан,
-    // * Если нет, создадим новый.
-    // * many to many relation
     for (const tag of tags) {
       const existingTag = await Tag.findOneAndUpdate(
         { name: { $regex: new RegExp(`^${tag}$`, "i") } },
@@ -152,16 +149,24 @@ export async function createUpVote(params: QuestionVoteParams) {
     const { questionId, userId, path, hasDownVoted, hasUpVoted } = params;
 
     let updateQuery = {};
+    let updateReputation = {};
+    let updateUserReputation = {};
 
     if (hasUpVoted) {
       updateQuery = { $pull: { upvotes: userId } };
+      updateReputation = { $inc: { reputation: -10 } };
+      updateUserReputation = { $inc: { reputation: -1 } };
     } else if (hasDownVoted) {
       updateQuery = {
         $pull: { downvotes: userId },
         $push: { upvotes: userId },
       };
+      updateReputation = { $inc: { reputation: 20 } };
+      updateUserReputation = { $inc: { reputation: 2 } };
     } else {
       updateQuery = { $addToSet: { upvotes: userId } };
+      updateReputation = { $inc: { reputation: 10 } };
+      updateUserReputation = { $inc: { reputation: 1 } };
     }
 
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, { new: true });
@@ -170,9 +175,11 @@ export async function createUpVote(params: QuestionVoteParams) {
       throw new Error("Вопрос не найден.");
     }
 
-    await User.findByIdAndUpdate(userId, { $inc: { reputation: hasUpVoted ? -1 : 1 } });
+    // Author Reputation
+    await User.findByIdAndUpdate(question.author, updateReputation);
 
-    await User.findByIdAndUpdate(question.author, { $inc: { reputation: hasUpVoted ? -10 : 10 } });
+    // User Reputation
+    await User.findByIdAndUpdate(userId, updateUserReputation);
 
     revalidatePath(path);
   } catch (e) {
@@ -187,16 +194,24 @@ export async function createDownVote(params: QuestionVoteParams) {
     const { questionId, userId, path, hasDownVoted, hasUpVoted } = params;
 
     let updateQuery = {};
+    let updateReputation = {};
+    let updateUserReputation = {};
 
     if (hasDownVoted) {
       updateQuery = { $pull: { downvotes: userId } };
+      updateReputation = { $inc: { reputation: 10 } };
+      updateUserReputation = { $inc: { reputation: 1 } };
     } else if (hasUpVoted) {
       updateQuery = {
         $pull: { upvotes: userId },
         $push: { downvotes: userId },
       };
+      updateReputation = { $inc: { reputation: -20 } };
+      updateUserReputation = { $inc: { reputation: -2 } };
     } else {
       updateQuery = { $addToSet: { downvotes: userId } };
+      updateReputation = { $inc: { reputation: -10 } };
+      updateUserReputation = { $inc: { reputation: -1 } };
     }
 
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, { new: true });
@@ -204,14 +219,11 @@ export async function createDownVote(params: QuestionVoteParams) {
     if (!question) {
       throw new Error("Вопрос не найден.");
     }
+    // Author Reputation.
+    await User.findByIdAndUpdate(question.author, updateReputation);
 
-    await User.findByIdAndUpdate(userId, {
-      $inc: { reputation: (!hasDownVoted && !hasUpVoted) || hasUpVoted ? -1 : 1 },
-    });
-
-    await User.findByIdAndUpdate(question.author, {
-      $inc: { reputation: (!hasDownVoted && !hasUpVoted) || hasUpVoted ? -10 : 10 },
-    });
+    // User Reputation
+    await User.findByIdAndUpdate(userId, updateUserReputation);
 
     revalidatePath(path);
   } catch (e) {
@@ -230,8 +242,6 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
     await Interaction.deleteMany({ question: questionId });
     await Tag.updateMany({ questions: questionId }, { $pull: { questions: questionId } });
 
-    // await User.findByIdAndUpdate(authorId, { $pull: { questions: questionId } }, { new: true });
-
     revalidatePath(path);
   } catch (e) {
     console.log(e);
@@ -245,9 +255,11 @@ export async function editQuestion(params: EditQuestionParams) {
     const { questionId, title, content, path } = params;
 
     const question = await Question.findById(questionId).populate("tags");
+
     if (!question) {
       throw new Error("Вопрос не найден.");
     }
+
     question.title = title;
     question.content = content;
     await question.save();

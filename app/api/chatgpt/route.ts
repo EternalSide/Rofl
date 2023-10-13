@@ -15,11 +15,12 @@ export const POST = async (request: Request) => {
         messages: [
           {
             role: "system",
-            content: "You are a knowlegeable assistant that provides quality information.",
+            content:
+              "Вы помощник, предоставляющий качественную информацию по программированию и не только доступным и понятным языком.",
           },
           {
             role: "user",
-            content: `Tell me ${question}`,
+            content: `Рассскажи мне как ${question}`,
           },
         ],
       }),

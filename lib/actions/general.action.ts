@@ -7,8 +7,6 @@ import Answer from "@/database/models/answer.model";
 import User from "@/database/models/user.model";
 import Tag from "@/database/models/tag.model";
 
-const SearchableTypes = ["question", "answer", "user", "tag"];
-
 export const globalSearch = async (params: SearchParams) => {
   try {
     await connectToDatabase();
@@ -86,9 +84,11 @@ export const globalSearch = async (params: SearchParams) => {
       }
     };
 
+    const SearchableTypes = ["question", "answer", "user", "tag"];
+
+    // - Без фильтров.
+    // Поиск по всем моделям.
     if (!typeLower || !SearchableTypes.includes(typeLower)) {
-      // - Без фильтров.
-      // Поиск по всем моделям.
       for (const { model, searchField, type } of modelsAndTypes) {
         const queryResults = await model.find({ [searchField]: regexQuery }).limit(2);
 

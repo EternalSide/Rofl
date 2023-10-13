@@ -13,9 +13,7 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 
 import Link from "next/link";
-import { Metadata, ResolvingMetadata } from "next";
-import { redirect } from "next/navigation";
-import generateChappyAnswer from "@/lib/chappi";
+import { Metadata } from "next";
 import { ITag } from "@/database/models/tag.model";
 
 interface QuestionPageProps {
@@ -41,16 +39,6 @@ const QuestionPage = async ({ params, searchParams }: QuestionPageProps) => {
   if (userId) {
     user = await getUserById({ userId });
   }
-
-  // ! Xардкод
-  let chappyAlowed = true;
-
-  // if (chappyAlowed) {
-  //   await generateChappyAnswer({
-  //     questionId: params.questionId,
-  //     questionText: question.content,
-  //   });
-  // }
 
   return (
     <>

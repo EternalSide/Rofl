@@ -92,16 +92,24 @@ export async function createUpVoteAnswer(params: AnswerVoteParams) {
     const { answerId, userId, path, hasDownVoted, hasUpVoted } = params;
 
     let updateQuery = {};
+    let updateReputation = {};
+    let updateUserReputation = {};
 
     if (hasUpVoted) {
       updateQuery = { $pull: { upvotes: userId } };
+      updateReputation = { $inc: { reputation: -5 } };
+      updateUserReputation = { $inc: { reputation: -1 } };
     } else if (hasDownVoted) {
       updateQuery = {
         $pull: { downvotes: userId },
         $push: { upvotes: userId },
       };
+      updateReputation = { $inc: { reputation: 10 } };
+      updateUserReputation = { $inc: { reputation: 2 } };
     } else {
       updateQuery = { $addToSet: { upvotes: userId } };
+      updateReputation = { $inc: { reputation: 5 } };
+      updateUserReputation = { $inc: { reputation: 1 } };
     }
 
     const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, { new: true });
@@ -110,13 +118,9 @@ export async function createUpVoteAnswer(params: AnswerVoteParams) {
       throw new Error("Комментарий не найден.");
     }
 
-    await User.findByIdAndUpdate(userId, {
-      $inc: { reputation: hasUpVoted ? -2 : 2 },
-    });
+    await User.findByIdAndUpdate(userId, updateUserReputation);
 
-    await User.findByIdAndUpdate(answer.author, {
-      $inc: { reputation: hasUpVoted ? -10 : +10 },
-    });
+    await User.findByIdAndUpdate(answer.author, updateReputation);
 
     revalidatePath(path);
   } catch (e) {
@@ -131,16 +135,24 @@ export async function createDownVoteAnswer(params: AnswerVoteParams) {
     const { answerId, userId, path, hasDownVoted, hasUpVoted } = params;
 
     let updateQuery = {};
+    let updateReputation = {};
+    let updateUserReputation = {};
 
     if (hasDownVoted) {
       updateQuery = { $pull: { downvotes: userId } };
+      updateReputation = { $inc: { reputation: 5 } };
+      updateUserReputation = { $inc: { reputation: 1 } };
     } else if (hasUpVoted) {
       updateQuery = {
         $pull: { upvotes: userId },
         $push: { downvotes: userId },
       };
+      updateReputation = { $inc: { reputation: -10 } };
+      updateUserReputation = { $inc: { reputation: -2 } };
     } else {
       updateQuery = { $addToSet: { downvotes: userId } };
+      updateReputation = { $inc: { reputation: -5 } };
+      updateUserReputation = { $inc: { reputation: -1 } };
     }
 
     const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, { new: true });
@@ -149,13 +161,9 @@ export async function createDownVoteAnswer(params: AnswerVoteParams) {
       throw new Error("Комментарий не найден.");
     }
 
-    await User.findByIdAndUpdate(userId, {
-      $inc: { reputation: hasDownVoted ? -2 : 2 },
-    });
+    await User.findByIdAndUpdate(userId, updateUserReputation);
 
-    await User.findByIdAndUpdate(answer.author, {
-      $inc: { reputation: hasDownVoted ? -10 : +10 },
-    });
+    await User.findByIdAndUpdate(answer.author, updateReputation);
 
     revalidatePath(path);
   } catch (e) {
