@@ -1,5 +1,6 @@
 # Rofl
 
+![Rofl](https://i.ibb.co/vV3mC5Y/rofl.png)
 
 <p>Rofl — приложение, похожее на Stack Overflow.</p>
 <p>Деплой - https://overflow-six.vercel.app/</p>
