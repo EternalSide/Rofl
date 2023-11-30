@@ -1,8 +1,7 @@
-# Rof 
+# Rofl
 
 
-
-<p>Rof — приложение, похожее на Stack Overflow.</p>
+<p>Rofl — приложение, похожее на Stack Overflow.</p>
 <p>Деплой - https://overflow-six.vercel.app/</p>
 
 ### ⭐ Функционал:
