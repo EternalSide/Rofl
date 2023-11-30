@@ -21,7 +21,7 @@ const AllAnswers = async ({ totalAnswers, questionId, userId, page, filter }: Al
 
   return (
     <div className="mt-11">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between max-sm:flex-col max-sm:gap-1.5 max-sm:items-start">
         <h3 className="primary-text-gradient">Ответов: {totalAnswers}</h3>
         {totalAnswers > 0 && <Filter filters={AnswerFilters} />}
       </div>

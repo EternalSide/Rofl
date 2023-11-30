@@ -2,7 +2,7 @@
 // import { faker } from "@faker-js/faker";
 // import { createQuestion } from "./question.action";
 
-// // Функции для Добавления вопрос и проверки фильтров, поиска, пагинации..
+// Функции для Добавления вопрос и проверки фильтров, поиска, пагинации..
 // export const sendSomeFakeData = async (count: number) => {
 //   try {
 //     for (let i = 0; i <= count; i++) {

@@ -35,7 +35,7 @@ const UserProfile = async ({ params, searchParams }: UserProps) => {
   const data = await getUserByUsername({ username: params.username });
 
   const isOwnProfile = clerkId && clerkId === data?.user.clerkId;
-  const isAdmin = data?.user.username === "overflow";
+  const isAdmin = data?.user.username === "eternalside";
 
   if (!data?.user) {
     return <h1 className="h1-bold text-dark100_light900 text-center">Учетной записи не существует.</h1>;
@@ -47,7 +47,7 @@ const UserProfile = async ({ params, searchParams }: UserProps) => {
         <div className="flex flex-col items-start gap-4 lg:flex-row">
           <UserAvatar alt={`Фото ${data.user.name}`} imgUrl={data.user.picture} classNames="w-[140px] h-[140px]" />
           <div className="mt-3">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               <h2 className="h2-bold text-dark100_light900">{data.user.name}</h2>
               {isAdmin && <BadgeCheck color="#ff7000" className="primary-text-gradient h-5 w-5" />}
             </div>

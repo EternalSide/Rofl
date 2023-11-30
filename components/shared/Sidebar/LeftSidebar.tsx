@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
-import { SignedOut, useAuth, useUser } from "@clerk/nextjs";
+import { SignedOut, useUser } from "@clerk/nextjs";
 
 import Image from "next/image";
 import Link from "next/link";

@@ -12,7 +12,6 @@ import { SearchParamsProps } from "@/types";
 import { Metadata } from "next";
 import Loading from "./loading";
 import { auth } from "@clerk/nextjs";
-import { toast } from "@/components/ui/use-toast";
 
 export const metadata: Metadata = {
   title: "Главная / RuOverflow",

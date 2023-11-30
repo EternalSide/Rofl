@@ -23,11 +23,6 @@ export const sidebarLinks: SidebarLink[] = [
     label: "Пользователи",
   },
 
-  // {
-  //   imgURL: "/assets/icons/suitcase.svg",
-  //   route: "/jobs",
-  //   label: "Вакансии",
-  // },
   {
     imgURL: "/assets/icons/tag.svg",
     route: "/tags",
@@ -43,6 +38,11 @@ export const sidebarLinks: SidebarLink[] = [
     route: "/ask-question",
     label: "Опубликовать",
   },
+  // {
+  //   imgURL: "/assets/icons/star.svg",
+  //   route: "/admin",
+  //   label: "Админка",
+  // },
 ];
 
 export const BADGE_CRITERIA = {

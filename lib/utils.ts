@@ -132,9 +132,7 @@ export const assignBadges = (params: BadgeParam) => {
 
   const { criteria } = params;
 
-  criteria.forEach((item) => {
-    const { type, count } = item;
-
+  criteria.forEach(({ type, count }) => {
     const badgeLevels: any = BADGE_CRITERIA[type];
 
     Object.keys(badgeLevels).forEach((level: any) => {

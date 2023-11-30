@@ -51,8 +51,3 @@ export interface BadgeCounts {
 }
 
 export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;
-
-export interface ChappiProps {
-  questionText: string;
-  questionId: string;
-}

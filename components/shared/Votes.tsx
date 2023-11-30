@@ -5,7 +5,7 @@ import { createDownVote, createUpVote } from "@/lib/actions/question.action";
 import { ToggleSaveQuestion } from "@/lib/actions/user.action";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
 
@@ -35,13 +35,22 @@ const Votes = ({
   hasSaved,
 }: VotesProps) => {
   const path = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     viewQuestion({ questionId: questionId!, userId: userId ? userId : undefined });
-  }, [questionId, answerId, path, userId]);
+
+    router.refresh();
+  }, [questionId, router, userId]);
 
   const handleSave = async (): Promise<void> => {
-    if (!userId) return;
+    if (!userId) {
+      toast({
+        title: "Войдите, чтобы добавить вопрос в избранное",
+        duration: 2000,
+      });
+      return;
+    }
 
     const savedAction = await ToggleSaveQuestion({ userId, questionId: questionId!, path });
 
@@ -52,11 +61,6 @@ const Votes = ({
     });
     return;
   };
-
-  const [fakeVote, setFakeVote] = useState({
-    number: upvotes,
-    isLiked: hasUpVoted,
-  });
 
   const handleVote = async (action: ActionVoteType) => {
     if (!userId) {

@@ -13,6 +13,7 @@ const HomeFilters = () => {
   const handleTypeClick = (item: string) => {
     if (active === item) {
       setActive("");
+
       const newUrl = formUrlQuery({
         params: searchParams.toString(),
         key: "filter",
@@ -22,11 +23,13 @@ const HomeFilters = () => {
       router.push(newUrl, { scroll: false });
     } else {
       setActive(item);
+
       const newUrl = formUrlQuery({
         params: searchParams.toString(),
         key: "filter",
         value: item.toLowerCase(),
       });
+
       router.push(newUrl, { scroll: false });
     }
   };
