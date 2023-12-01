@@ -20,3 +20,17 @@
 - Просмотры
 - Топы авторов, статей
 
+### ✈️ Stack
+
+- Next.js & SSR
+- MongoDB & mongoose
+- TailwindCSS
+- Clerk
+- shadcnui
+- Webhooks
+- middleware, Server actions
+- Zod
+- React hook form
+- html-react-parser
+- prismjs
+  и прочее..
